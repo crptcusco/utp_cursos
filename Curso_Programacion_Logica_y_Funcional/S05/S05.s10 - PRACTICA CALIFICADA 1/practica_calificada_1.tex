@@ -1,0 +1,127 @@
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\geometry{a4paper, margin=2.5cm}
+
+% Configuración de código
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{keyword}{RGB}{0,0,180}
+\definecolor{comment}{RGB}{0,120,0}
+\lstset{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{codebg},
+  keywordstyle=\color{keyword}\bfseries,
+  commentstyle=\color{comment},
+  numbers=left,
+  frame=single,
+  showstringspaces=false
+}
+
+\title{\textbf{Práctica Calificada 1} \\ Programación Lógica y Funcional}
+\author{Docente: Carlos R. P. Tovar}
+\date{Ciclo 2025-2}
+
+\begin{document}
+\maketitle
+
+\section*{Indicaciones}
+\begin{itemize}
+    \item Duración: 90 minutos.
+    \item Responda justificando cada solución con código en Haskell.
+    \item Puede usar \texttt{ghci} para validar sus funciones.
+    \item Cada pregunta vale 7 puntos (total: 21).
+\end{itemize}
+
+\section*{Ejercicio 1 (7 puntos)}
+Implemente en Haskell una función:
+
+\begin{lstlisting}[language=Haskell]
+clasificarNota :: Int -> String
+\end{lstlisting}
+
+que clasifique una nota de 0 a 20:
+\begin{itemize}
+    \item 0 -- 10 : "Desaprobado"
+    \item 11 -- 13 : "Regular"
+    \item 14 -- 17 : "Bueno"
+    \item 18 -- 20 : "Excelente"
+    \item Fuera de rango : "Nota inválida"
+\end{itemize}
+
+\textbf{Prueba esperada:}
+\begin{lstlisting}[language=Haskell]
+ghci> clasificarNota 9
+"Desaprobado"
+ghci> clasificarNota 15
+"Bueno"
+ghci> clasificarNota 21
+"Nota invalida"
+\end{lstlisting}
+
+\section*{Ejercicio 2 (7 puntos)}
+Defina en Haskell una función recursiva:
+
+\begin{lstlisting}[language=Haskell]
+contarDigitos :: Int -> Int
+\end{lstlisting}
+
+que retorne la cantidad de dígitos de un número entero positivo.
+
+\textbf{Ejemplo de uso:}
+\begin{lstlisting}[language=Haskell]
+ghci> contarDigitos 7
+1
+ghci> contarDigitos 12345
+5
+\end{lstlisting}
+
+\textbf{Extensión:} si el número es negativo, conviértalo primero a positivo.
+
+\section*{Ejercicio 3 (7 puntos)}
+Implemente un programa principal recursivo:
+
+\begin{lstlisting}[language=Haskell]
+menu :: IO ()
+\end{lstlisting}
+
+que muestre las siguientes opciones:
+
+\begin{enumerate}
+    \item Calcular factorial de un número
+    \item Calcular el cuadrado de un número
+    \item Salir
+\end{enumerate}
+
+El menú debe repetirse hasta que el usuario elija la opción 3 (Salir).
+
+\textbf{Ejemplo de ejecución:}
+\begin{verbatim}
+Seleccione una opción:
+1. Factorial
+2. Cuadrado
+3. Salir
+> 1
+Ingrese un número: 5
+El factorial es 120
+
+Seleccione una opción:
+1. Factorial
+2. Cuadrado
+3. Salir
+> 3
+Adiós!
+\end{verbatim}
+
+\section*{Criterios de Evaluación}
+\begin{itemize}
+    \item Uso correcto de funciones y guards (Ej. 1).
+    \item Implementación recursiva sin usar funciones predefinidas (Ej. 2).
+    \item Manejo de recursion y E/S en menú interactivo (Ej. 3).
+\end{itemize}
+
+\end{document}

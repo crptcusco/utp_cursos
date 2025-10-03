@@ -1,0 +1,220 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+
+
+
+% Configuración básica
+\title{\textbf{Guía de Laboratorio 5: Preprocesadores CSS \\ (Introducción a Stylus)}}
+\author{\textcolor{blue}{\textbf{Docente: Carlos R. P. Tovar}}}
+\date{}
+
+% Colores personalizados
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{blue}{RGB}{41,84,163}
+\definecolor{darkblue}{RGB}{0,51,102}
+
+% Definición del lenguaje Stylus (corregido)
+\lstdefinelanguage{Stylus}{
+    keywords={@import, @require, @media, @keyframes, if, else, for, in, return, mixin, function, use},
+    sensitive=false,
+    comment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    string=[s]{"}{"},
+    string=[s]{'}{'}
+}
+
+% Estilo para cajas de código (optimizado)
+\newtcblisting{codebox}[1][]{
+    colback=codebg,
+    colframe=blue,
+    arc=4pt,
+    boxrule=0.8pt,
+    fonttitle=\bfseries,
+    listing only,
+    listing options={
+        basicstyle=\ttfamily\small,
+        breaklines=true,
+        tabsize=2,
+        literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+                 {ñ}{{\~n}}1 {¿}{{?`}}1 {¡}{{!`}}1
+    },
+    #1
+}
+
+% Estilo para enunciados
+\newcommand{\enunciado}[1]{
+    \vspace{0.5em}
+    \noindent\colorbox{blue!10}{
+        \parbox{\dimexpr\textwidth-2\fboxsep}{
+            \small\sffamily\textcolor{darkblue}{#1}
+        }
+    }
+    \vspace{0.5em}
+}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+% Ejercicio 1: Sintaxis Básica (corregido)
+\section*{Ejercicio 1: Sintaxis Básica}
+\enunciado{
+    1. Instala Stylus: \texttt{npm install -g stylus} \\
+    2. Crea un archivo \texttt{estilos.styl} \\
+    3. Compila con: \texttt{stylus estilos.styl -o styles.css}
+}
+
+\begin{codebox}[title=Stylus]
+/* Variables */
+color-primario = #3498db
+margen-base = 16px
+
+/* Sintaxis simplificada */
+body
+    font 100% Arial, sans-serif
+    background #f5f5f5
+    margin 0
+    padding margen-base
+
+/* Anidamiento */
+nav
+    ul
+        list-style none
+        padding 0
+        li
+            display inline-block
+            margin-right margen-base
+\end{codebox}
+
+% Ejercicio 2: Variables y Operaciones (corregido)
+\section*{Ejercicio 2: Variables y Operaciones}
+\enunciado{
+    1. Define variables para dimensiones \\
+    2. Usa operaciones matemáticas \\
+    3. Aplica interpolación de variables
+}
+
+\begin{codebox}[title=Stylus]
+// Cálculos con variables
+ancho-base = 960px
+ancho-columna = ancho-base / 3
+gutter = 20px
+
+.contenedor
+    width ancho-base
+    margin 0 auto
+
+.columna
+    float left
+    width "calc(%s - %s)" % (ancho-columna gutter)
+    margin-right gutter
+    &:last-child
+        margin-right 0
+\end{codebox}
+
+% Ejercicio 3: Mixins y Funciones (corregido)
+\section*{Ejercicio 3: Mixins y Funciones}
+\enunciado{
+    1. Crea mixins reutilizables \\
+    2. Define funciones personalizadas \\
+    3. Usa condicionales
+}
+
+\begin{codebox}[title=Stylus]
+// Mixin para sombras
+sombra(nivel = 1)
+    if nivel == 1
+        box-shadow 0 2px 4px rgba(0,0,0,0.1)
+    else if nivel == 2
+        box-shadow 0 4px 8px rgba(0,0,0,0.15)
+
+// Función para convertir a em
+em(valor, base = 16px)
+    (valor / base)em
+
+// Aplicación
+.card
+    sombra(2)
+    border-radius 8px
+    padding em(24px)
+    font-size em(18px)
+\end{codebox}
+
+% Ejercicio 4: Modularización (corregido)
+\section*{Ejercicio 4: Modularización}
+\enunciado{
+    1. Divide el código en módulos \\
+    2. Usa @import para combinarlos \\
+    3. Compila múltiples archivos
+}
+
+\begin{codebox}[title=Stylus]
+\begin{verbatim}
+src/
+|- main.styl
+|- variables.styl
+|- mixins.styl
+|- componentes/
+   |- botones.styl
+   |- tarjetas.styl
+\end{verbatim}
+
+// main.styl
+@import 'variables'
+@import 'mixins'
+@import 'componentes/botones'
+@import 'componentes/tarjetas'
+\end{codebox}
+
+
+% Ejercicio 5: Ejemplo
+\section*{Ejercicio 5}
+\enunciado{
+    1. Divide el código en módulos \\
+    2. Usa @import para combinarlos \\
+    3. Muestra el código Stylus
+}
+
+\begin{codebox}[title=CSS]
+
+.contenedor {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+@media (min-width: 768px) {
+  .contenedor {
+    padding: 40px;
+  }
+}
+
+.card {
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  padding: 20px;
+  background-color: white;
+}
+
+.card__titulo {
+  color: #3498db;
+  font-size: 1.5rem;
+}
+
+.card__texto {
+  color: #333;
+  line-height: 1.6;
+}
+
+\end{codebox}
+
+
+
+\end{document}

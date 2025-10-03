@@ -1,0 +1,198 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+
+% ===== CONFIGURACIÓN =====
+\title{\textbf{Guía de Laboratorio: Introducción al Diseño Responsivo}}
+\author{\textcolor{blue}{\textbf{Docente: Carlos R. P. Tovar}}}
+\date{}
+
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{blue}{RGB}{41,84,163}
+\definecolor{darkblue}{RGB}{0,51,102}
+
+% ===== ESTILOS PARA CÓDIGO =====
+\lstdefinelanguage{CSS}{
+    keywords={@media, min-width, max-width, width, float, 
+              clear, margin, padding, display, position},
+    sensitive=true,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+}
+
+\newtcblisting{codebox}[1][]{
+    colback=codebg,
+    colframe=blue,
+    arc=4pt,
+    boxrule=0.8pt,
+    fonttitle=\bfseries,
+    listing only,
+    listing options={
+        basicstyle=\ttfamily\small,
+        breaklines=true,
+        tabsize=2,
+        literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    },
+    #1
+}
+
+\newcommand{\enunciado}[1]{
+    \vspace{0.5em}
+    \noindent\colorbox{blue!10}{
+        \parbox{\dimexpr\textwidth-2\fboxsep}{
+            \small\sffamily\textcolor{darkblue}{#1}
+        }
+    }
+    \vspace{0.5em}
+}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+
+
+% ===== EJERCICIOS ORIGINALES (optimizados) =====
+\section*{Ejercicio 1: Viewport Meta Tag}
+\enunciado{
+    1. Implementa el meta tag viewport \\
+    2. Observa diferencias en dispositivos móviles \\
+    3. Prueba con/sin él en Chrome DevTools
+}
+
+\begin{codebox}[title=HTML]
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+\end{codebox}
+
+\section*{Ejercicio 2: Unidades Relativas}
+\enunciado{
+    1. Maqueta un contenedor con unidades \% y rem \\
+    2. Cambia tamaños de fuente relativamente \\
+    3. Ajusta paddings con em
+}
+
+\begin{codebox}[title=CSS]
+.contenedor {
+    width: 90%;
+    margin: 0 auto;
+    font-size: 1rem;
+    padding: 1em;
+}
+
+.titulo {
+    font-size: 1.5rem;
+    margin-bottom: 0.5em;
+}
+\end{codebox}
+
+% ===== EJERCICIO ADICIONAL: MAQUETACIÓN CON DIVS =====
+\section*{Ejercicio 3: Maquetación Responsiva con Divs}
+\enunciado{
+    1. Crea una estructura básica con divs (header, contenido, sidebar, footer) \\
+    2. Usa float para disposición en desktop \\
+    3. Con media queries convierte a diseño vertical en móviles \\
+    4. Aplica márgenes porcentuales
+}
+
+\begin{codebox}[title=HTML]
+<div class="contenedor">
+    <div class="header">Header</div>
+    <div class="main">
+        <div class="contenido">Contenido Principal</div>
+        <div class="sidebar">Sidebar</div>
+    </div>
+    <div class="footer">Footer</div>
+</div>
+\end{codebox}
+
+\begin{codebox}[title=CSS]
+/* Estilos base (mobile-first) */
+.contenedor {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.header, .footer {
+    background: #333;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+.contenido, .sidebar {
+    padding: 1rem;
+}
+
+/* Desktop (float layout) */
+@media (min-width: 768px) {
+    .contenido {
+        float: left;
+        width: 70%;
+        background: #f0f0f0;
+    }
+    
+    .sidebar {
+        float: right;
+        width: 30%;
+        background: #e0e0e0;
+    }
+    
+    .main::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+}
+\end{codebox}
+
+\section*{Ejercicio 4: Menú Adaptable}
+\enunciado{
+    1. Crea menú horizontal (desktop) / vertical (mobile) \\
+    2. Usa display: inline-block para items \\
+    3. Oculta elementos con display: none en móviles
+}
+
+\begin{codebox}[title=CSS]
+.menu-item {
+    display: inline-block;
+    margin-right: 1rem;
+}
+
+@media (max-width: 600px) {
+    .menu-item {
+        display: block;
+        margin: 0.5rem 0;
+    }
+    
+    .desktop-only {
+        display: none;
+    }
+}
+\end{codebox}
+
+\section*{Ejercicio 5: Imágenes Flexibles}
+\enunciado{
+    1. Haz imágenes adaptables con max-width \\
+    2. Usa figure/figcaption para semántica \\
+    3. Aplica bordes porcentuales
+}
+
+\begin{codebox}[title=CSS]
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+    border: 0.5vw solid #ddd;
+}
+
+figure {
+    margin: 2vh auto;
+    text-align: center;
+}
+\end{codebox}
+
+\end{document}

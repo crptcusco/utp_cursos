@@ -1,0 +1,337 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single
+}
+
+\lstset{style=mystyle}
+
+\title{\textbf{Guía de Laboratorio – SciPy para IA} \\ Curso de Inteligencia Artificial}
+\author{Docente: Carlos R. P. Tovar}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Objetivo de la sesión}
+Al finalizar la sesión, el alumno será capaz de:
+\begin{itemize}
+    \item Utilizar las funciones principales del módulo \texttt{scipy} en problemas de IA.
+    \item Resolver problemas de optimización, álgebra lineal y procesamiento de señales.
+    \item Aplicar funciones estadísticas y técnicas de procesamiento digital.
+    \item Implementar soluciones científicas para problemas de inteligencia artificial.
+\end{itemize}
+
+\section*{Introducción a SciPy en IA}
+SciPy es una biblioteca fundamental para computación científica en Python. En inteligencia artificial, se utiliza para:
+\begin{itemize}
+    \item Optimización de funciones de costo
+    \item Procesamiento de señales e imágenes
+    \item Álgebra lineal en operaciones de redes neuronales
+    \item Análisis estadístico de datos
+    \item Resolución de ecuaciones diferenciales
+\end{itemize}
+
+\section*{Instrucciones}
+Resuelva los siguientes ejercicios en Python utilizando \texttt{scipy}. Cada ejercicio debe implementarse en un script independiente o en un notebook de Jupyter.
+
+\section*{Ejercicios Prácticos}
+
+\begin{enumerate}[label=\textbf{Ejercicio \arabic*:}, leftmargin=1.5cm]
+
+\item \textbf{Optimización de función de costo} \\
+Minimice la función $f(x) = x^2 + 10 \sin(x)$ que representa una función de costo en un problema de IA.
+
+\begin{lstlisting}[language=Python]
+from scipy.optimize import minimize
+import numpy as np
+
+# Funcion de costo a optimizar
+def costo(x):
+    return x**2 + 10*np.sin(x)
+
+# Encontrar minimo
+resultado = minimize(costo, x0=0, method='BFGS')
+print(f"Minimo en x = {resultado.x[0]:.4f}, f(x) = {resultado.fun:.4f}")
+\end{lstlisting}
+
+\item \textbf{Regresión lineal con SciPy} \\
+Implemente una regresión lineal para predecir valores.
+
+\begin{lstlisting}[language=Python]
+from scipy import stats
+import numpy as np
+
+# Datos de entrenamiento
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2, 4, 5, 4, 5])
+
+# Ajustar modelo lineal
+pendiente, intercepto, r, p, error = stats.linregress(x, y)
+
+print(f"Modelo: y = {pendiente:.2f}x + {intercepto:.2f}")
+print(f"Coeficiente de determinacion R^2: {r**2:.4f}")
+\end{lstlisting}
+
+\item \textbf{Procesamiento de señales - Filtrado} \\
+Aplique un filtro a una señal ruidosa.
+
+\begin{lstlisting}[language=Python]
+from scipy import signal
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Generar señal con ruido
+t = np.linspace(0, 1, 1000)
+senal = np.sin(2*np.pi*5*t) + 0.5*np.random.randn(1000)
+
+# Diseñar filtro Butterworth
+b, a = signal.butter(4, 0.1, 'low')
+senal_filtrada = signal.filtfilt(b, a, senal)
+
+# Visualizar resultados
+plt.figure(figsize=(10, 4))
+plt.plot(t, senal, alpha=0.5, label='Señal con ruido')
+plt.plot(t, senal_filtrada, 'r-', label='Señal filtrada')
+plt.legend()
+plt.show()
+\end{lstlisting}
+
+\item \textbf{Álgebra lineal - Descomposición SVD} \\
+Realice descomposición SVD para reducción de dimensionalidad.
+
+\begin{lstlisting}[language=Python]
+from scipy.linalg import svd
+import numpy as np
+
+# Matriz de datos (ejemplo: 5 características, 100 muestras)
+X = np.random.randn(100, 5)
+
+# Descomposicion SVD
+U, s, Vt = svd(X)
+
+# Reduccion a 2 componentes principales
+X_reduced = np.dot(X, Vt[:2].T)
+
+print(f"Forma original: {X.shape}")
+print(f"Forma reducida: {X_reduced.shape}")
+print(f"Valores singulares: {s}")
+\end{lstlisting}
+
+\item \textbf{Transformada de Fourier para análisis de series temporales} \\
+Analice una señal en el dominio de la frecuencia.
+
+\begin{lstlisting}[language=Python]
+from scipy.fft import fft, fftfreq
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Generar señal compuesta
+t = np.linspace(0, 1, 1000)
+senal = np.sin(2*np.pi*5*t) + 0.5*np.sin(2*np.pi*20*t)
+
+# Transformada de Fourier
+fft_vals = fft(senal)
+frecuencias = fftfreq(len(senal), t[1]-t[0])
+
+# Encontrar frecuencias dominantes
+idx = np.argsort(np.abs(fft_vals))[::-1]
+frecuencias_dominantes = frecuencias[idx[:4]]
+
+print(f"Frecuencias dominantes: {frecuencias_dominantes} Hz")
+\end{lstlisting}
+
+\item \textbf{Resolución de ecuaciones diferenciales} \\
+Modele un sistema dinámico simple.
+
+\begin{lstlisting}[language=Python]
+from scipy.integrate import solve_ivp
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Sistema: crecimiento poblacional con capacidad de carga
+def sistema(t, y, r, K):
+    return r * y * (1 - y/K)
+
+# Parametros
+r, K = 0.5, 100  # Tasa de crecimiento, capacidad de carga
+y0 = [10]        # Poblacion inicial
+
+# Resolver
+sol = solve_ivp(sistema, [0, 50], y0, args=(r, K), 
+                t_eval=np.linspace(0, 50, 100))
+
+plt.plot(sol.t, sol.y[0])
+plt.xlabel('Tiempo')
+plt.ylabel('Poblacion')
+plt.title('Modelo de crecimiento logistico')
+plt.show()
+\end{lstlisting}
+
+\item \textbf{Interpolación para completar datos faltantes} \\
+Complete datos faltantes usando interpolación.
+
+\begin{lstlisting}[language=Python]
+from scipy.interpolate import interp1d
+import numpy as np
+
+# Datos con valores faltantes
+x = np.array([0, 1, 2, 4, 5, 6])  # Falta x=3
+y = np.array([0, 1, 4, 16, 25, 36])  # Valores conocidos
+
+# Interpolacion cubica
+f = interp1d(x, y, kind='cubic', fill_value='extrapolate')
+
+# Estimar valor en x=3
+x_nuevo = 3
+y_estimado = f(x_nuevo)
+
+print(f"Valor interpolado en x={x_nuevo}: {y_estimado:.2f}")
+\end{lstlisting}
+
+\item \textbf{Análisis estadístico de datos} \\
+Realice análisis estadístico de un dataset.
+
+\begin{lstlisting}[language=Python]
+from scipy import stats
+import numpy as np
+
+# Generar datos normales
+datos = np.random.normal(50, 15, 1000)
+
+# Calculos estadisticos
+media = np.mean(datos)
+mediana = np.median(datos)
+desviacion = np.std(datos)
+asimetria = stats.skew(datos)
+curtosis = stats.kurtosis(datos)
+
+# Test de normalidad
+stat, p_valor = stats.normaltest(datos)
+
+print(f"Media: {media:.2f}, Mediana: {mediana:.2f}")
+print(f"Asimetria: {asimetria:.2f}, Curtosis: {curtosis:.2f}")
+print(f"Normalidad: p-valor = {p_valor:.4f}")
+\end{lstlisting}
+
+\item \textbf{Procesamiento de imágenes - Convolución} \\
+Aplique filtros a imágenes usando convolución.
+
+\begin{lstlisting}[language=Python]
+from scipy import ndimage
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import data
+
+# Cargar imagen de ejemplo
+imagen = data.camera()
+
+# Definir kernel de deteccion de bordes
+kernel = np.array([[-1, -1, -1],
+                   [-1,  8, -1],
+                   [-1, -1, -1]])
+
+# Aplicar convolucion
+imagen_bordes = ndimage.convolve(imagen, kernel)
+
+# Visualizar
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
+ax1.imshow(imagen, cmap='gray')
+ax1.set_title('Imagen original')
+ax2.imshow(imagen_bordes, cmap='gray')
+ax2.set_title('Bordes detectados')
+plt.show()
+\end{lstlisting}
+
+\item \textbf{Optimización de hiperparámetros} \\
+Optimice hiperparámetros usando técnicas de SciPy.
+
+\begin{lstlisting}[language=Python]
+from scipy.optimize import differential_evolution
+import numpy as np
+from sklearn.datasets import make_classification
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
+
+# Generar datos de ejemplo
+X, y = make_classification(n_samples=1000, n_features=20, 
+                          n_informative=15, random_state=42)
+
+# Funcion objetivo para optimizar
+def objetivo(hiperparams):
+    n_estimators = int(hiperparams[0])
+    max_depth = int(hiperparams[1]) if hiperparams[1] > 1 else None
+    
+    modelo = RandomForestClassifier(
+        n_estimators=n_estimators,
+        max_depth=max_depth,
+        random_state=42
+    )
+    
+    score = cross_val_score(modelo, X, y, cv=3, scoring='accuracy').mean()
+    return -score  # Minimizar negativo de accuracy
+
+# Espacio de busqueda de hiperparametros
+limites = [(10, 200),  # n_estimators
+           (2, 20)]    # max_depth
+
+# Optimizacion por evolucion diferencial
+resultado = differential_evolution(objetivo, limites, maxiter=20, popsize=10,
+                                  mutation=(0.5, 1), recombination=0.7)
+
+print(f"Mejores hiperparametros: {resultado.x}")
+print(f"Mejor accuracy: {-resultado.fun:.4f}")
+\end{lstlisting}
+
+\end{enumerate}
+
+\section*{Recursos Adicionales}
+\begin{itemize}
+    \item Documentación oficial de SciPy: \url{https://scipy.org/}
+    \item Tutoriales de SciPy: \url{https://docs.scipy.org/doc/scipy/tutorial/}
+    \item Ejemplos de aplicaciones en IA: \url{https://github.com/scipy/scipy/tree/main/doc/source/tutorial}
+    \item Libro: "Python for Data Analysis" by Wes McKinney
+\end{itemize}
+
+\section*{Evaluación}
+\begin{itemize}
+    \item Complete todos los ejercicios prácticos
+    \item Documente el código con comentarios explicativos
+    \param{Realice experimentos adicionales modificando los parámetros}
+    \item Prepare un breve reporte de los resultados obtenidos
+\end{itemize}
+
+\end{document}

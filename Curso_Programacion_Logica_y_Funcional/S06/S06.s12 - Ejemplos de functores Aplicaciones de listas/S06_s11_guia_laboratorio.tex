@@ -1,0 +1,256 @@
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+
+\geometry{a4paper, margin=2cm}
+
+% Configuración de colores
+\definecolor{codebg}{RGB}{240, 240, 240}
+\definecolor{keyword}{RGB}{0, 90, 156}
+\definecolor{comment}{RGB}{34, 139, 34}
+
+% Configuración para Haskell
+\lstdefinestyle{haskell}{
+    language=Haskell,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyword}\bfseries,
+    commentstyle=\color{comment},
+    backgroundcolor=\color{codebg},
+    showstringspaces=false,
+    frame=single,
+    rulecolor=\color{black}
+}
+
+% Caja para ejercicios
+\newtcolorbox{ejercicio}[1]{
+    colback=white,
+    colframe=blue!50!black,
+    fonttitle=\bfseries,
+    title=#1,
+    boxsep=5pt,
+    arc=4pt,
+    breakable
+}
+
+\title{Guía de Laboratorio: Functores y Aplicaciones de Listas}
+\author{Programación Lógica y Funcional \\ Universidad Tecnológica del Perú}
+\date{Docente: Carlos R. P. Tovar}
+
+\begin{document}
+
+\maketitle
+
+\section*{Objetivos de la Sesión}
+\begin{itemize}
+\item Comprender el concepto de functor en Haskell
+\item Aplicar functores para transformar datos en contextos
+\item Utilizar funciones de orden superior con listas
+\item Implementar ejemplos prácticos de functores con listas
+\item Desarrollar habilidades para procesamiento de datos con functores
+\end{itemize}
+
+\section*{Material Requerido}
+\begin{itemize}
+\item GHC (Glasgow Haskell Compiler) instalado
+\item Editor de texto con soporte para Haskell
+\item Esta guía de laboratorio
+\end{itemize}
+
+\begin{ejercicio}{Ejercicio 1: Introducción a Functores (20 min)}
+Implementa las instancias de Functor para tipos personalizados y utiliza fmap.
+
+\begin{lstlisting}[style=haskell]
+-- Tipo Maybe ya tiene instancia de Functor
+ejemploMaybe :: Maybe Int -> Maybe Int
+ejemploMaybe = fmap (+1)
+
+-- Tipo Either ya tiene instancia de Functor
+ejemploEither :: Either String Int -> Either String Int
+ejemploEither = fmap (*2)
+
+-- Crea tu propio tipo y su instancia de Functor
+data Resultado a = Exito a | Error String deriving Show
+
+instance Functor Resultado where
+    fmap f (Exito x) = Exito (f x)
+    fmap _ (Error msg) = Error msg
+
+-- Ejemplos de uso:
+-- fmap (+1) (Exito 5) -> Exito 6
+-- fmap (+1) (Error "problema") -> Error "problema"
+\end{lstlisting}
+
+\textbf{Tareas:}
+\begin{enumerate}
+\item Completa la instancia de Functor para Resultado
+\item Crea una función que transforme una lista de Resultados
+\item Implementa una función que aplique una transformación a un Resultado sólo si es Exito
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}{Ejercicio 2: Aplicaciones de Listas con Map y Filter (25 min)}
+Trabaja con funciones de orden superior para procesar listas.
+
+\begin{lstlisting}[style=haskell]
+-- Datos de ejemplo
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+noms = ["Ana", "Carlos", "Elena", "David", "Beatriz"]
+
+-- 1. Transformaciones con map
+cuads = map (^2) nums
+
+inits = map head noms
+
+-- 2. Filtrado con filter
+pars = filter even nums
+
+nomsLargos = filter (\x -> length x > 5) noms
+
+-- 3. Combinaciones
+cuadsPars = map (^2) (filter even nums)
+\end{lstlisting}
+
+\textbf{Tareas:}
+\begin{enumerate}
+\item Crea una función que devuelva los cubos de los números impares
+\item Filtra los nombres que contienen la letra 'a' y conviértelos a mayúsculas
+\item Implementa una función que sume 10 a los números mayores que 5
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}{Ejercicio 3: Functores con Listas Anidadas (20 min)}
+Trabaja con estructuras de datos anidadas y functores.
+
+\begin{lstlisting}[style=haskell]
+-- Listas anidadas
+listAnid = [[1, 2, 3], [4, 5], [6, 7, 8, 9]]
+
+-- Transformación con doble fmap
+dupAnid = fmap (fmap (*2)) listAnid
+
+-- Aplanar lista
+aplana = concat
+
+-- Functor para procesamiento en profundidad
+procProfundo = fmap (fmap show)
+\end{lstlisting}
+
+\textbf{Tareas:}
+\begin{enumerate}
+\item Crea una función que calcule la suma de cada sublista
+\item Implementa una función que filtre las sublistas con más de 2 elementos
+\item Crea una transformación que convierta todos los números a string con prefijo "N-"
+\end{enumerate}
+\end{ejercicio}
+
+\begin{ejercicio}{Ejercicio 4: Aplicaciones Prácticas con Datos Reales (25 min)}
+Aplica functores y listas a un escenario del mundo real.
+
+\begin{lstlisting}[style=haskell]
+-- Tipo para representar productos
+data Producto = Producto {
+    nom :: String,
+    pre :: Double,
+    cant :: Int
+} deriving Show
+
+-- Datos de ejemplo
+inv = [
+    Producto "Laptop" 1200.50 5,
+    Producto "Mouse" 25.99 20,
+    Producto "Teclado" 75.30 12,
+    Producto "Monitor" 350.00 8
+]
+
+-- Función auxiliar para valor
+valorProd p = pre p * fromIntegral (cant p)
+
+-- 1. Obtener todos los nombres
+nomsProds = map nom inv
+
+-- 2. Filtrar productos caros
+prodsCaros = filter (\p -> pre p > 100.0) inv
+
+-- 3. Calcular valor total por producto
+vInventario = map valorProd inv
+
+-- 4. Aplicar descuento del 10%
+aplDesc = map (\p -> p {pre = pre p * 0.9})
+\end{lstlisting}
+
+\textbf{Tareas:}
+\begin{enumerate}
+\item Calcula el valor total del inventario
+\item Filtra los productos con menos de 10 unidades
+\item Crea una lista de strings con formato "Nombre: Precio"
+\item Implementa un descuento escalonado
+\end{enumerate}
+\end{ejercicio}
+
+\section*{Ejercicios Adicionales}
+\begin{lstlisting}[style=haskell]
+-- 1. Functor para tipos personalizados complejos
+data Arbol a = Hoja a | Nodo (Arbol a) (Arbol a) deriving Show
+
+instance Functor Arbol where
+    fmap f (Hoja x) = Hoja (f x)
+    fmap f (Nodo izq der) = Nodo (fmap f izq) (fmap f der)
+
+-- 2. Procesamiento de texto
+procTexto = fmap (filter (/= ' ') . map toUpper)
+
+-- 3. Calculadora estadística
+stats xs = (prom, min, max)
+    where
+        prom = sum xs / fromIntegral (length xs)
+        min = minimum xs
+        max = maximum xs
+\end{lstlisting}
+
+\section*{Reto Final}
+\begin{lstlisting}[style=haskell]
+-- Sistema de procesamiento de pedidos
+data Pedido = Pedido {
+    cli :: String,
+    items :: [String],
+    tot :: Double,
+    desc :: Bool
+} deriving Show
+
+peds = [
+    Pedido "Ana" ["Laptop", "Mouse"] 1226.49 True,
+    Pedido "Carlos" ["Teclado"] 75.30 False,
+    Pedido "Elena" ["Monitor", "Teclado"] 425.30 True
+]
+
+-- Tareas del reto:
+-- 1. Aplicar 15% de descuento a pedidos con descuento
+-- 2. Filtrar pedidos con total mayor a 500.00
+-- 3. Crear resumen por cliente
+-- 4. Calcular el total general de todos los pedidos
+\end{lstlisting}
+
+\section*{Evaluación}
+\begin{itemize}
+\item Correcta implementación de instancias de Functor
+\item Uso apropiado de map, filter y funciones de orden superior
+\item Manejo adecuado de listas anidadas
+\item Soluciones eficientes y elegantes
+\item Manejo de casos bordes y validaciones
+\end{itemize}
+
+\section*{Recursos Adicionales}
+\begin{itemize}
+\item Documentación oficial de Haskell: https://www.haskell.org/
+\item Hoogle para búsqueda de funciones: https://hoogle.haskell.org/
+\item Learn You a Haskell: http://learnyouahaskell.com/
+\end{itemize}
+
+\end{document}

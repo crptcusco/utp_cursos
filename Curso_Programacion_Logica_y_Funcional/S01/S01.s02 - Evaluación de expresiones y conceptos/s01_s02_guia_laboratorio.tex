@@ -1,0 +1,194 @@
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+% Configuración de página
+\geometry{a4paper, margin=2cm}
+\setlength{\parindent}{0pt}
+
+% Colores para código
+\definecolor{haskell}{RGB}{94, 80, 134}
+\definecolor{prolog}{RGB}{0, 90, 156}
+\definecolor{background}{RGB}{240, 245, 250}
+
+% Configuración para Haskell
+\lstdefinestyle{haskell}{
+    language=Haskell,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{haskell}\bfseries,
+    commentstyle=\color{gray},
+    numbers=left,
+    showstringspaces=false,
+    backgroundcolor=\color{background},
+    frame=single,
+    rulecolor=\color{haskell}
+}
+
+% Configuración para Prolog
+\lstdefinestyle{prolog}{
+    language=Prolog,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{prolog}\bfseries,
+    commentstyle=\color{gray},
+    numbers=left,
+    showstringspaces=false,
+    backgroundcolor=\color{background},
+    frame=single,
+    rulecolor=\color{prolog}
+}
+
+% Caja para ejercicios
+\newtcolorbox{ejercicio}[1]{
+    colback=white,
+    colframe=blue!50!black,
+    fonttitle=\bfseries,
+    title=#1,
+    boxsep=5pt,
+    arc=4pt
+}
+
+\title{Programación Lógica y Funcional: Sesión 2}
+\author{Docente: Carlos R. P. Tovar}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introducción}
+En esta sesión practicaremos:
+\begin{itemize}
+\item Evaluación de expresiones en Haskell
+\item Consultas simples y complejas en Prolog
+\item Comparación entre paradigmas funcional y lógico
+\end{itemize}
+
+\section*{1. Ejercicio Haskell: Evaluación de Expresiones}
+\begin{ejercicio}{Función Básica}
+\textbf{Objetivo:} Comprender la reducción de expresiones en programación funcional.
+
+\begin{lstlisting}[style=haskell]
+doble x = x * 2
+doble (3 + 2) - 1
+\end{lstlisting}
+
+\textbf{Pasos de solución:}
+\begin{enumerate}
+\item Resolver paréntesis: \(3 + 2 = 5\)
+\item Aplicar función: \(\texttt{doble}\ 5 = 5 \times 2 = 10\)
+\item Operación final: \(10 - 1 = 9\)
+\end{enumerate}
+\end{ejercicio}
+
+\section*{2. Ejercicio Prolog: Consultas Simples}
+\begin{ejercicio}{Relaciones Familiares}
+\textbf{Objetivo:} Consultar relaciones en una base de conocimientos.
+
+\begin{lstlisting}[style=prolog]
+% Base de conocimientos
+padre(juan, maria).
+padre(maria, carlos).
+abuelo(X, Y) :- padre(X, Z), padre(Z, Y).
+
+% Consultas
+?- padre(juan, maria).     % true
+?- abuelo(juan, carlos).   % true
+\end{lstlisting}
+
+\textbf{Explicación:}
+\begin{itemize}
+\item Los \textbf{hechos} definen relaciones directas
+\item Las \textbf{reglas} permiten inferir relaciones complejas
+\end{itemize}
+\end{ejercicio}
+
+\section*{3. Ejercicio Integrado: Factorial}
+\begin{ejercicio}{Comparación de Paradigmas}
+\begin{minipage}{0.48\textwidth}
+\textbf{Haskell (Funcional)}
+\begin{lstlisting}[style=haskell]
+factorial 0 = 1
+factorial n = 
+  n * factorial (n-1)
+\end{lstlisting}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+\textbf{Prolog (Lógico)}
+\begin{lstlisting}[style=prolog]
+factorial(0, 1).
+factorial(N, F) :- 
+  N > 0, 
+  M is N-1, 
+  factorial(M, FM), 
+  F is N * FM.
+\end{lstlisting}
+\end{minipage}
+
+\vspace{1em}
+\textbf{Puntos clave:}
+\begin{itemize}
+\item Haskell: \textbf{Recursión} y \textbf{inmutabilidad}
+\item Prolog: \textbf{Unificación} y \textbf{backtracking}
+\end{itemize}
+\end{ejercicio}
+
+\section*{4. Tarea}
+\begin{ejercicio}{Ejercicios Propuestos}
+\textbf{1. Implementar en Haskell:}
+\begin{lstlisting}[style=haskell]
+sumaCuadrados :: [Int] -> Int
+-- Calcula la suma de cuadrados de una lista
+$[1,2,3] \rightarrow 1^{2} + 2^{2} + 3^{2} = 14$
+\end{lstlisting}
+
+\textbf{2. Modelar en Prolog:}
+\begin{lstlisting}[style=prolog]
+% Regla "hermano" usando padre y madre
+% Dos personas son hermanas si comparten ambos padres
+hermano(X, Y) :- ...
+\end{lstlisting}
+\end{ejercicio}
+
+\section*{Recursos Adicionales}
+\begin{itemize}
+\item \href{https://swish.swi-prolog.org/}{SWISH Prolog Online}
+\item \href{https://play.haskell.org/}{Haskell Playground}
+\item Código completo: \href{https://github.com/}{GitHub Classroom Link}
+\end{itemize}
+
+\newpage
+
+\section*{Apéndice: Soluciones}
+\begin{ejercicio}{Solución Haskell (Suma de Cuadrados)}
+\begin{lstlisting}[style=haskell]
+sumaCuadrados :: [Int] -> Int
+sumaCuadrados [] = 0
+sumaCuadrados (x:xs) = (x * x) + sumaCuadrados xs
+\end{lstlisting}
+\end{ejercicio}
+
+\begin{ejercicio}{Solución Prolog (Hermanos)}
+\begin{lstlisting}[style=prolog]
+hermano(X, Y) :- 
+    padre(Z, X), 
+    padre(Z, Y), 
+    madre(W, X), 
+    madre(W, Y), 
+    X \= Y.
+\end{lstlisting}
+\end{ejercicio}
+
+\begin{center}
+\Large ¡Éxito en su práctica de laboratorio! \texttt{:-)}
+\end{center}
+
+\end{document}

@@ -1,0 +1,244 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    inputencoding=utf8,
+    extendedchars=true,
+    frame=single,
+    literate={á}{{\'a}}1
+           {é}{{\'e}}1
+           {í}{{\'i}}1
+           {ó}{{\'o}}1
+           {ú}{{\'u}}1
+           {ñ}{{\~n}}1
+           {Á}{{\'A}}1
+           {É}{{\'E}}1
+           {Í}{{\'I}}1
+           {Ó}{{\'O}}1
+           {Ú}{{\'U}}1
+           {Ñ}{{\~N}}1
+}
+
+\title{\textbf{Guía de Laboratorio – Sesión 08} \\ Funciones y Modularidad en Python}
+\author{Curso de Inteligencia Artificial}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Objetivo de la sesión}
+Al finalizar la sesión, el alumno será capaz de:
+\begin{itemize}
+    \item Definir y utilizar funciones en Python.
+    \item Implementar parámetros y valores de retorno.
+    \item Organizar el código en módulos reutilizables.
+    \item Aplicar buenas prácticas en la creación de funciones.
+\end{itemize}
+
+\section*{Instrucciones}
+Resuelva los siguientes ejercicios en Python. Guarde cada uno en un archivo independiente.  
+Cuando un ejercicio indique modularidad, cree un módulo \texttt{utilidades.py} y utilícelo en su script principal.
+
+\section*{Ejercicios}
+
+\begin{enumerate}[label=\textbf{Ejercicio \arabic*:}, leftmargin=1.5cm]
+    \item \textbf{Saludo personalizado:} Cree una función que reciba un nombre y muestre un saludo.
+    
+    \item \textbf{Área de un círculo:} Defina una función que reciba el radio y devuelva el área. Use el módulo \texttt{math}.
+    
+    \item \textbf{Número par o impar:} Cree una función que determine si un número es par o impar.
+    
+    \item \textbf{Conversión de temperatura:} Escriba funciones para convertir de Celsius a Fahrenheit y viceversa.
+    
+    \item \textbf{Factorial con función:} Implemente el cálculo del factorial usando una función.
+    
+    \item \textbf{Módulo de utilidades matemáticas:} Cree un módulo \texttt{utilidades.py} con funciones para:
+    \begin{itemize}
+        \item Calcular el cuadrado de un número.
+        \item Calcular el cubo de un número.
+        \item Calcular la raíz cuadrada.
+    \end{itemize}
+    Importe y utilice el módulo en un script principal.
+    
+    \item \textbf{Calculadora modular:} Cree un módulo \texttt{calculadora.py} con funciones de suma, resta, multiplicación y división. Implemente un menú en un script principal para usarlas.
+    
+    \item \textbf{Contar vocales:} Defina una función que cuente el número de vocales en una cadena.
+    
+    \item \textbf{Máximo común divisor y mínimo común múltiplo:} Implemente ambas funciones y pruébelas con varios pares de números.
+    
+    \item \textbf{Agenda de contactos modular:} Cree un módulo con funciones para:
+    \begin{itemize}
+        \item Agregar un contacto (nombre y teléfono).
+        \item Buscar un contacto por nombre.
+        \item Mostrar todos los contactos.
+    \end{itemize}
+    Use un diccionario como estructura de almacenamiento.
+\end{enumerate}
+
+\section*{Recomendaciones}
+\begin{itemize}
+    \item Pruebe sus funciones con distintos valores de entrada.
+    \item Comente el código para documentar el propósito de cada función.
+    \item Mantenga el código limpio y organizado en módulos reutilizables.
+\end{itemize}
+
+\section*{Ejercicios con soluciones}
+
+\begin{enumerate}[label=\textbf{Ejercicio \arabic*:}, leftmargin=1.5cm]
+    \item \textbf{Saludo personalizado:}
+    \begin{lstlisting}
+def saludar(nombre):
+    print(f"Hola, {nombre}!")
+
+saludar("Carlos")
+    \end{lstlisting}
+    
+    \item \textbf{Área de un círculo:}
+    \begin{lstlisting}
+import math
+
+def area_circulo(radio):
+    return math.pi * radio**2
+
+print(area_circulo(5))
+    \end{lstlisting}
+    
+    \item \textbf{Número par o impar:}
+    \begin{lstlisting}
+def es_par(num):
+    return num % 2 == 0
+
+print(es_par(4))  # True
+print(es_par(7))  # False
+    \end{lstlisting}
+    
+    \item \textbf{Conversión de temperatura:}
+    \begin{lstlisting}
+def celsius_a_fahrenheit(c):
+    return c * 9/5 + 32
+
+def fahrenheit_a_celsius(f):
+    return (f - 32) * 5/9
+
+print(celsius_a_fahrenheit(0))
+print(fahrenheit_a_celsius(32))
+    \end{lstlisting}
+    
+    \item \textbf{Factorial con función:}
+    \begin{lstlisting}
+def factorial(n):
+    resultado = 1
+    for i in range(1, n+1):
+        resultado *= i
+    return resultado
+
+print(factorial(5))
+    \end{lstlisting}
+    
+    \item \textbf{Módulo de utilidades matemáticas:}
+    \texttt{utilidades.py}:
+    \begin{lstlisting}
+import math
+
+def cuadrado(n):
+    return n ** 2
+
+def cubo(n):
+    return n ** 3
+
+def raiz_cuadrada(n):
+    return math.sqrt(n)
+    \end{lstlisting}
+    
+    Script principal:
+    \begin{lstlisting}
+import utilidades
+
+print(utilidades.cuadrado(4))
+print(utilidades.cubo(3))
+print(utilidades.raiz_cuadrada(16))
+    \end{lstlisting}
+    
+    \item \textbf{Calculadora modular:}
+    \texttt{calculadora.py}:
+    \begin{lstlisting}
+def sumar(a,b): return a+b
+def restar(a,b): return a-b
+def multiplicar(a,b): return a*b
+def dividir(a,b): return a/b if b != 0 else "Error: división por cero"
+    \end{lstlisting}
+    
+    Script principal:
+    \begin{lstlisting}
+import calculadora
+
+print(calculadora.sumar(3,4))
+print(calculadora.dividir(10,2))
+    \end{lstlisting}
+    
+    \item \textbf{Contar vocales:}
+    \begin{lstlisting}
+def contar_vocales(texto):
+    vocales = "aeiouAEIOU"
+    return sum(1 for letra in texto if letra in vocales)
+
+print(contar_vocales("Inteligencia Artificial"))
+    \end{lstlisting}
+    
+    \item \textbf{MCD y MCM:}
+    \begin{lstlisting}
+import math
+
+def mcd(a,b):
+    return math.gcd(a,b)
+
+def mcm(a,b):
+    return abs(a*b) // math.gcd(a,b)
+
+print(mcd(12,18))
+print(mcm(12,18))
+    \end{lstlisting}
+    
+    \item \textbf{Agenda de contactos modular:}
+    \texttt{agenda.py}:
+    \begin{lstlisting}
+contactos = {}
+
+def agregar_contacto(nombre, telefono):
+    contactos[nombre] = telefono
+
+def buscar_contacto(nombre):
+    return contactos.get(nombre, "No encontrado")
+
+def mostrar_contactos():
+    return contactos
+    \end{lstlisting}
+    
+    Script principal:
+    \begin{lstlisting}
+import agenda
+
+agenda.agregar_contacto("Juan", "12345")
+print(agenda.buscar_contacto("Juan"))
+print(agenda.mostrar_contactos())
+    \end{lstlisting}
+\end{enumerate}
+
+\end{document}

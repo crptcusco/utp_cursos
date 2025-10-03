@@ -1,0 +1,9 @@
+<div class="container">
+  <header class="header">Header</header>
+  <main class="main-content">
+    <section class="columna">Columna 1</section>
+    <section class="columna">Columna 2</section>
+    <section class="columna">Columna 3</section>
+  </main>
+  <footer class="footer">Footer</footer>
+</div>

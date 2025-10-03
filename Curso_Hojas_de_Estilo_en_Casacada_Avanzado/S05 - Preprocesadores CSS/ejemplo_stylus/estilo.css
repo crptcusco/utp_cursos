@@ -1,0 +1,13 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background: #3498db;
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+nav li {
+  display: inline-block;
+  margin-right: 20px;
+}

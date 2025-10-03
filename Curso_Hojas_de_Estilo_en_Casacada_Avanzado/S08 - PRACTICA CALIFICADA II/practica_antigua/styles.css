@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    background-color: #F2F2F2;
+    color: #333333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .site-header {
+    background-color: #1E2A38;
+    color: #FFFFFF;
+    padding: 2.5rem;
+  }
+  .site-header .menu {
+    margin-top: 1.25rem;
+  }
+  .site-header .menu a {
+    color: #FFFFFF;
+    text-decoration: none;
+    margin-right: 1.25rem;
+  }
+  
+  .servicios {
+    padding: 2.5rem;
+  }
+  .servicios .cards {
+    display: flex;
+    gap: 1.25rem;
+  }
+  .servicios .cards .card {
+    background-color: #FFFFFF;
+    padding: 1.25rem;
+    border-radius: 0.25rem;
+    width: calc((100% / 2) - 0.625rem);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.1);
+  }
+  .servicios .cards .card h3 {
+    margin-top: 0;
+  }
+  .servicios .cards .card .btn {
+    display: inline-block;
+    background-color: #E74C3C;
+    color: #FFFFFF;
+    padding: 0.625rem 0.9375rem;
+    text-decoration: none;
+    border-radius: 0.25rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15); /* ✅ sombra suave agregada */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .servicios .cards .card .btn:hover {
+    background-color: #C0392B;
+    box-shadow: 0 0.375rem 0.625rem rgba(0, 0, 0, 0.2);
+  }
+  
+  .equipo {
+    background-color: #F2F2F2;
+    padding: 2.5rem;
+    text-align: center;
+  }
+  
+  .site-footer {
+    background-color: #1E2A38;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  
+  @media (max-width: 600px) {
+    .servicios .cards {
+      flex-direction: column;
+    }
+    .servicios .cards .card {
+      width: 100%;
+    }
+  }
+  

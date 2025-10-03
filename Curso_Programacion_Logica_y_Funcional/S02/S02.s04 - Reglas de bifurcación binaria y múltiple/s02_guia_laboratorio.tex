@@ -1,0 +1,147 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    frame=single,
+    breaklines=true
+}
+
+\title{Guía de Laboratorio - Programación Declarativa}
+\author{Curso de Programación Lógica y Funcional}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Ejercicios en Haskell}
+
+\subsection*{1. Determinar si un número es par}
+\begin{lstlisting}[language=Haskell]
+esPar :: Int -> Bool
+esPar n = n `mod` 2 == 0
+
+-- Ejemplo:
+-- esPar 4  => True
+-- esPar 5  => False
+\end{lstlisting}
+
+\subsection*{2. Calcular el cuadrado de un número}
+\begin{lstlisting}[language=Haskell]
+cuadrado :: Int -> Int
+cuadrado x = x * x
+
+-- Ejemplo:
+-- cuadrado 5 => 25
+\end{lstlisting}
+
+\subsection*{3. Obtener el factorial de un número}
+\begin{lstlisting}[language=Haskell]
+factorial :: Int -> Int
+factorial 0 = 0
+factorial 1 = 1
+factorial n = n * factorial (n - 1)
+
+-- Ejemplo:
+-- factorial 5 => 120
+\end{lstlisting}
+
+\subsection*{4. Sumar todos los elementos de una lista}
+\begin{lstlisting}[language=Haskell]
+sumaLista :: [Int] -> Int
+sumaLista [] = 0
+sumaLista (x:xs) = x + sumaLista xs
+
+-- Ejemplo:
+-- sumaLista [1,2,3,4] => 10
+\end{lstlisting}
+
+\subsection*{5. Obtener el máximo de una lista}
+\begin{lstlisting}[language=Haskell]
+maximo :: [Int] -> Int
+maximo [x] = x
+maximo (x:xs) = max x (maximo xs)
+
+-- Ejemplo:
+-- maximo [3,8,2,5] => 8
+\end{lstlisting}
+
+\newpage
+\section*{Ejercicios en Prolog}
+
+\subsection*{1. Definir hechos de animales y clasificarlos como mamíferos o aves}
+\begin{lstlisting}[language=Prolog]
+mamifero(perro).
+mamifero(gato).
+ave(gallina).
+ave(paloma).
+
+es_mamifero(X) :- mamifero(X).
+es_ave(X) :- ave(X).
+
+% Consultas:
+% ?- es_mamifero(perro).
+% ?- es_ave(paloma).
+\end{lstlisting}
+
+\subsection*{2. Regla que determine si un número es par o impar}
+\begin{lstlisting}[language=Prolog]
+par(N) :- 0 is N mod 2.
+impar(N) :- 1 is N mod 2.
+
+% Consultas:
+% ?- par(4).
+% ?- impar(7).
+\end{lstlisting}
+
+\subsection*{3. Reglas para identificar si alguien es hijo de otra persona}
+\begin{lstlisting}[language=Prolog]
+padre(juan, maria).
+madre(ana, maria).
+
+hijo(H, P) :- padre(P, H).
+hijo(H, M) :- madre(M, H).
+
+% Consultas:
+% ?- hijo(maria, juan).
+% ?- hijo(maria, ana).
+\end{lstlisting}
+
+\subsection*{4. Modelar una familia pequeña con relaciones de padre, madre e hijo}
+\begin{lstlisting}[language=Prolog]
+padre(carlos, pedro).
+madre(luisa, pedro).
+padre(carlos, ana).
+madre(luisa, ana).
+
+hijo(H, P) :- padre(P, H).
+hijo(H, M) :- madre(M, H).
+
+% Consultas:
+% ?- hijo(pedro, carlos).
+% ?- hijo(ana, luisa).
+\end{lstlisting}
+
+\subsection*{5. Representar una lista de números y consultar el primero y el último elemento}
+\begin{lstlisting}[language=Prolog]
+lista([1,2,3,4,5]).
+
+primero([H|_], H).
+ultimo([X], X).
+ultimo([_|T], X) :- ultimo(T, X).
+
+% Consultas:
+% ?- lista(L), primero(L, P).
+% ?- lista(L), ultimo(L, U).
+\end{lstlisting}
+
+\end{document}

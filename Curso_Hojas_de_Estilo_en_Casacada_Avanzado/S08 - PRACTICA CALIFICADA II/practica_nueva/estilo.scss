@@ -1,0 +1,60 @@
+// Variables
+$color-claro: #ffffff;
+$color-oscuro: #1a1a1a;
+$texto-claro: #333333;
+$texto-oscuro: #ffffff;
+$primario: #3498db;
+
+// Estilos base
+body {
+  background-color: $color-claro;
+  color: $texto-claro;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.theme-btn {
+  background: $primario;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.card {
+  background: lighten($color-claro, 5%);
+  border: 1px solid darken($color-claro, 10%);
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 400px;
+}
+
+.btn {
+  background: $primario;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+// Tema oscuro
+body.dark-theme {
+  background-color: $color-oscuro;
+  color: $texto-oscuro;
+  
+  .card {
+    background: lighten($color-oscuro, 5%);
+    border-color: lighten($color-oscuro, 10%);
+  }
+}

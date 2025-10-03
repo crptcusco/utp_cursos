@@ -1,0 +1,285 @@
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\geometry{a4paper, margin=2cm}
+
+% Colores
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{keyword}{RGB}{0,0,90}
+\definecolor{comment}{RGB}{34,139,34}
+
+% Estilo para Haskell
+\lstdefinestyle{haskell}{
+    language=Haskell,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{keyword}\bfseries,
+    commentstyle=\color{comment}\itshape,
+    backgroundcolor=\color{codebg},
+    numbers=none,
+    showstringspaces=false,
+    frame=single,
+    rulecolor=\color{black},
+    breaklines=true,
+    breakatwhitespace=true,
+    literate=
+        {->}{{$\rightarrow$}}2
+        {=>}{{$\Rightarrow$}}2
+}
+
+\title{Gu\'ia de Laboratorio\\Haskell + SQLite (HDBC)}
+\author{Curso: Programaci\'on L\'ogica y Funcional \\ Docente: Carlos R. P. Tovar}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Resumen}
+Esta gu\'ia muestra paso a paso c\'omo conectar un programa Haskell a una base de datos SQLite usando el paquete \texttt{HDBC} con el backend \texttt{HDBC-sqlite3}. El laboratorio incluye: crear la base y la tabla, insertar registros, consultar, actualizar y eliminar. Se provee c\'odigo completo y comandos para compilar y verificar en la l\'inea de comandos.
+
+\section*{Objetivos}
+\begin{itemize}
+  \item Conectar desde Haskell a una base de datos SQLite.
+  \item Crear una tabla y realizar operaciones CRUD (Create, Read, Update, Delete).
+  \item Interpretar resultados y verificar persistencia con la herramienta \texttt{sqlite3}.
+  \item Practicar uso de \texttt{HDBC} y funciones b\'asicas de manejo de bases de datos en Haskell.
+\end{itemize}
+
+\section*{Requisitos previos}
+\begin{itemize}
+  \item GHC y cabal instalados en las maquinas del laboratorio (en el laboratorio usamos GHC 7.8.3).
+  \item Paquetes Haskell: \texttt{HDBC} y \texttt{HDBC-sqlite3} instalados. Comando sugerido (si el administrador lo permite):
+  \begin{verbatim}
+  cabal update
+  cabal install HDBC HDBC-sqlite3
+  \end{verbatim}
+  \item Herramienta de l\'inea de comandos \texttt{sqlite3} para inspeccionar la base: \verb|sqlite3 tienda.db|.
+  \item Editor de texto o entorno para editar ficheros \texttt{.hs}.
+\end{itemize}
+
+\section*{Archivo principal: Main.hs}
+A continuaci\'on est\'a el programa completo empleado en este laboratorio. Este archivo realiza: conexion, creaci\'on de tabla, inserci\'on de 10 productos, consulta, actualizaci\'on y eliminaci\'on.
+
+\begin{lstlisting}[style=haskell, caption=Main.hs (programa completo)]
+{-# LANGUAGE OverloadedStrings #-}
+
+import Database.HDBC
+import Database.HDBC.Sqlite3
+
+-- Funcion principal
+main :: IO ()
+main = do
+    putStrLn "Paso 1: Conectando a la base de datos..."
+    conn <- connectSqlite3 "tienda.db"
+
+    putStrLn "Paso 2: Creando la tabla productos si no existe..."
+    run conn
+        "CREATE TABLE IF NOT EXISTS productos (\
+        \id INTEGER PRIMARY KEY AUTOINCREMENT, \
+        \nombre TEXT NOT NULL, \
+        \precio REAL NOT NULL, \
+        \stock INTEGER NOT NULL)"
+        []
+    commit conn
+    putStrLn "Tabla lista"
+
+    putStrLn "Paso 3: Insertando productos de ejemplo..."
+    insertarProductos conn
+    commit conn
+
+    putStrLn "Paso 4: Mostrando todos los productos..."
+    mostrarProductos conn
+
+    putStrLn "Paso 5: Actualizando un producto..."
+    actualizarProducto conn 1 "Laptop Gamer" 3500.0 5
+    commit conn
+    mostrarProductos conn
+
+    putStrLn "Paso 6: Eliminando un producto..."
+    eliminarProducto conn 2
+    commit conn
+    mostrarProductos conn
+
+    putStrLn "Paso 7: Cerrando la conexion..."
+    disconnect conn
+    putStrLn "Fin del programa"
+    
+
+-- Funcion para insertar varios productos
+insertarProductos :: Connection -> IO ()
+insertarProductos conn = do
+    run conn "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        [toSql ("Laptop" :: String), toSql (2500.0 :: Double), toSql (10 :: Int)]
+    run conn "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        [toSql ("Mouse" :: String), toSql (50.0 :: Double), toSql (100 :: Int)]
+    run conn "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        [toSql ("Teclado" :: String), toSql (120.0 :: Double), toSql (50 :: Int)]
+    run conn "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        [toSql ("Monitor" :: String), toSql (800.0 :: Double), toSql (20 :: Int)]
+    run conn "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        [toSql ("Impresora" :: String), toSql (600.0 :: Double), toSql (15 :: Int)]
+    run conn "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        [toSql ("Tablet" :: String), toSql (1500.0 :: Double), toSql (25 :: Int)]
+    run conn "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        [toSql ("Smartphone" :: String), toSql (2000.0 :: Double), toSql (30 :: Int)]
+    run conn "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        [toSql ("Cargador" :: String), toSql (80.0 :: Double), toSql (60 :: Int)]
+    run conn "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        [toSql ("Audifonos" :: String), toSql (300.0 :: Double), toSql (40 :: Int)]
+    run conn "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)"
+        [toSql ("Camara Web" :: String), toSql (400.0 :: Double), toSql (12 :: Int)]
+    putStrLn "Productos insertados"
+
+-- Funcion para mostrar productos
+mostrarProductos :: Connection -> IO ()
+mostrarProductos conn = do
+    putStrLn "Consultando productos..."
+    rows <- quickQuery' conn "SELECT id, nombre, precio, stock FROM productos" []
+    mapM_ imprimirFila rows
+
+-- Imprimir una fila
+imprimirFila :: [SqlValue] -> IO ()
+imprimirFila [sqlId, sqlNombre, sqlPrecio, sqlStock] = do
+    putStrLn $ "ID: " ++ fromSql sqlId
+             ++ " | Nombre: " ++ fromSql sqlNombre
+             ++ " | Precio: " ++ show (fromSql sqlPrecio :: Double)
+             ++ " | Stock: " ++ show (fromSql sqlStock :: Int)
+imprimirFila _ = putStrLn "Fila con formato inesperado"
+
+-- Funcion para actualizar un producto
+actualizarProducto :: Connection -> Int -> String -> Double -> Int -> IO ()
+actualizarProducto conn id nombre precio stock = do
+    run conn "UPDATE productos SET nombre = ?, precio = ?, stock = ? WHERE id = ?"
+        [toSql nombre, toSql precio, toSql stock, toSql id]
+    putStrLn $ "Producto con id " ++ show id ++ " actualizado"
+
+-- Funcion para eliminar un producto
+eliminarProducto :: Connection -> Int -> IO ()
+eliminarProducto conn id = do
+    run conn "DELETE FROM productos WHERE id = ?" [toSql id]
+    putStrLn $ "Producto con id " ++ show id ++ " eliminado"
+\end{lstlisting}
+
+\section*{Procedimiento de laboratorio (paso a paso)}
+\begin{enumerate}
+  \item \textbf{Preparar el entorno.}
+    \begin{itemize}
+      \item Confirme que GHC y cabal est\'an disponibles: \texttt{ghc --version} y \texttt{cabal --version}.
+      \item Confirme que los paquetes \texttt{HDBC} y \texttt{HDBC-sqlite3} est\'an instalados. Si no, pida al administrador su instalaci\'on o ejecute:
+      \begin{verbatim}
+      cabal update
+      cabal install HDBC HDBC-sqlite3
+      \end{verbatim}
+      \item Verifique que la utilidad \texttt{sqlite3} est\'e disponible: \texttt{sqlite3 --version}.
+    \end{itemize}
+
+  \item \textbf{Crear el archivo \texttt{Main.hs}.}
+    \begin{itemize}
+      \item Abra el editor y pegue el c\'odigo mostrado arriba.
+      \item Guarde como \texttt{Main.hs} en el directorio de trabajo.
+    \end{itemize}
+
+  \item \textbf{Compilar el programa.}
+    \begin{verbatim}
+    ghc Main.hs -o Main.exe
+    \end{verbatim}
+    Si hay errores de compilaci\'on, copie y pegue el mensaje de error en el foro de la clase o pida ayuda.
+
+  \item \textbf{Ejecutar el programa.}
+    \begin{verbatim}
+    ./Main.exe     (o Main.exe en Windows)
+    \end{verbatim}
+    Debe ver mensajes de progreso indicando cada paso (conectar, crear tabla, insertar, etc.). Al final, la base de datos \texttt{tienda.db} existir\'a en el directorio.
+
+  \item \textbf{Verificar con sqlite3 (opcional).}
+    \begin{verbatim}
+    sqlite3 tienda.db
+    sqlite> .tables
+    sqlite> SELECT * FROM productos;
+    sqlite> .schema productos
+    sqlite> .quit
+    \end{verbatim}
+
+  \item \textbf{Probar funciones en GHCi (opcional para investigaci\'on).}
+    \begin{verbatim}
+    ghci Main.hs
+    Prelude> :load "Main.hs"
+    Prelude Main> conn <- connectSqlite3 "tienda.db"
+    Prelude Main> mostrarProductos conn
+    Prelude Main> disconnect conn
+    \end{verbatim}
+    Nota: en GHCi algunas funciones requieren pasar la conexi\'on como argumento.
+
+\end{enumerate}
+
+\section*{Explicaci\'on de las operaciones SQL utilizadas}
+\begin{itemize}
+  \item \texttt{CREATE TABLE IF NOT EXISTS productos (...)}: crea la tabla si no existe.
+  \item \texttt{INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)}: inserta un registro; los signos de interrogaci\'on son marcadores de par\'ametro en HDBC.
+  \item \texttt{SELECT id, nombre, precio, stock FROM productos}: selecciona las columnas para mostrar.
+  \item \texttt{UPDATE productos SET ... WHERE id = ?}: actualiza los datos de un registro dado su id.
+  \item \texttt{DELETE FROM productos WHERE id = ?}: elimina un registro por id.
+\end{itemize}
+
+\section*{Salida esperada}
+Cuando ejecute el programa usted debe ver una salida similar a:
+\begin{verbatim}
+Paso 1: Conectando a la base de datos...
+Paso 2: Creando la tabla productos si no existe...
+Tabla lista
+Paso 3: Insertando productos de ejemplo...
+Productos insertados
+Paso 4: Mostrando todos los productos...
+Consultando productos...
+ID: 1 | Nombre: Laptop | Precio: 2500.0 | Stock: 10
+...
+Paso 5: Actualizando un producto...
+Producto con id 1 actualizado
+...
+Paso 6: Eliminando un producto...
+Producto con id 2 eliminado
+...
+Paso 7: Cerrando la conexion...
+Fin del programa
+\end{verbatim}
+
+\section*{Tareas y ejercicios propuestos}
+\begin{enumerate}
+  \item Modifique el programa para pedir datos por teclado y agregar un producto ingresado por el usuario.
+  \item Agregue una funci\'on de b\'usqueda por nombre que muestre todos los productos que contengan una subcadena.
+  \item Implemente paginaci\'on en la consulta de productos (limitar y desplazar, usando \texttt{LIMIT} y \texttt{OFFSET}).
+  \item Cree una versi\'on que exporte los productos a un archivo CSV.
+  \item Refactorice el c\'odigo separando responsabilidades en m\'ultiples m\'odulos: \texttt{DB}, \texttt{Model}, \texttt{Main}.
+\end{enumerate}
+
+\section*{Criterios de entrega}
+\begin{itemize}
+  \item Archivo fuente \texttt{Main.hs} o el repositorio con el proyecto.
+  \item Captura de pantalla o salida de consola mostrando la ejecuci\'on completa del programa.
+  \item Archivo \texttt{tienda.db} opcional si se solicita revisi\'on local.
+\end{itemize}
+
+\section*{Resoluci\'on de problemas comunes}
+\begin{itemize}
+  \item \textbf{No encuentra \texttt{HDBC} o \texttt{HDBC-sqlite3}}: aseg\'urese que los paquetes est\'an instalados con \texttt{cabal install}.
+  \item \textbf{El programa se queda colgado en la conexi\'on}: copie \texttt{sqlite3.dll} al mismo directorio que el ejecutable o verifique que la versi\'on de la DLL coincide con la arquitectura de GHC (x86\_64).
+  \item \textbf{Errores de codificaci\'on al imprimir acentos o s\u00edmbolos}: evite caracteres no ASCII en las cadenas o cambie la tabla de caracteres de la consola a UTF-8 con \texttt{chcp 65001}.
+  \item \textbf{Problemas al abrir la base desde la CLI de sqlite3}: abra la base exacta con \texttt{sqlite3 tienda.db} y ejecute \texttt{.tables} para verificar su contenido.
+\end{itemize}
+
+\section*{Referencias}
+\begin{itemize}
+  \item Documentaci\'on HDBC: \url{https://hackage.haskell.org/package/HDBC}
+  \item Documentaci\'on HDBC-sqlite3: \url{https://hackage.haskell.org/package/HDBC-sqlite3}
+  \item Documentaci\'on SQLite: \url{https://www.sqlite.org/docs.html}
+  \item Tutorial b\'asico de SQL: cualquier texto introductorio sobre SQL (por ejemplo, "SQL Tutorial" en sqlite.org).
+\end{itemize}
+
+\end{document}
+

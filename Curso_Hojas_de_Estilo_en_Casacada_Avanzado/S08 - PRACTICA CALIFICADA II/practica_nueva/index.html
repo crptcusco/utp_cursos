@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Preprocesadores</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1>Mi Sitio Web</h1>
+        <button id="themeToggle" class="theme-btn">
+            <span class="theme-icon">🌙</span>
+            <span class="theme-text">Cambiar a oscuro</span>
+        </button>
+    </header>
+    
+    <main class="container">
+        <div class="card">
+            <h3>Tarjeta Ejemplo</h3>
+            <p>Este es un contenido de ejemplo que cambia con el tema.</p>
+            <button class="btn">Botón de acción</button>
+        </div>
+    </main>
+    
+    <script>
+        const themeBtn = document.getElementById('themeToggle');
+        const themeText = themeBtn.querySelector('.theme-text');
+        
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                themeText.textContent = 'Cambiar a claro';
+                themeBtn.querySelector('.theme-icon').textContent = '☀️';
+            } else {
+                themeText.textContent = 'Cambiar a oscuro';
+                themeBtn.querySelector('.theme-icon').textContent = '🌙';
+            }
+        });
+    </script>
+</body>
+</html>

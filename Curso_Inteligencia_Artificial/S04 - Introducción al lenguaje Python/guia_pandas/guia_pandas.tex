@@ -1,0 +1,298 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{hyperref}
+
+\geometry{margin=2.5cm}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single
+}
+
+\lstset{style=mystyle}
+
+\title{\textbf{Guía de Laboratorio: Introducción a Pandas} \\ Curso: Inteligencia Artificial}
+\author{Docente: Carlos R. P. Tovar}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+Pandas es una biblioteca de Python especializada en el manejo y análisis de datos. Proporciona estructuras de datos flexibles y eficientes que facilitan trabajar con datos tabulares y series temporales. Esta guía te introducirá a los conceptos fundamentales de pandas.
+
+\section{Objetivos de Aprendizaje}
+Al finalizar esta guía, serás capaz de:
+\begin{itemize}
+    \item Crear y manipular Series y DataFrames
+    \item Cargar datos desde diferentes formatos (CSV, Excel, JSON)
+    \item Realizar operaciones básicas de limpieza y transformación de datos
+    \item Filtrar, seleccionar y agrupar datos
+    \item Realizar análisis exploratorio básico con pandas
+\end{itemize}
+
+\section{Requisitos Previos}
+\begin{itemize}
+    \item Conocimientos básicos de Python
+    \item Instalación de Python y pandas (\texttt{pip install pandas})
+    \item Editor de código o entorno de desarrollo (Jupyter Notebook recomendado)
+\end{itemize}
+
+\section{Ejercicios Prácticos}
+
+\subsection{Parte 1: Fundamentos de Pandas}
+
+\begin{enumerate}
+    \item \textbf{Creación de Series y DataFrames}
+    \begin{lstlisting}[language=Python]
+import pandas as pd
+import numpy as np
+
+# Crear una Serie
+serie_ejemplo = pd.Series([10, 20, 30, 40], index=['a', 'b', 'c', 'd'])
+print("Serie ejemplo:")
+print(serie_ejemplo)
+
+# Crear un DataFrame desde un diccionario
+datos = {
+    'Nombre': ['Ana', 'Juan', 'María', 'Carlos'],
+    'Edad': [25, 32, 28, 35],
+    'Ciudad': ['Lima', 'Bogotá', 'Lima', 'Quito']
+}
+df_personas = pd.DataFrame(datos)
+print("\nDataFrame personas:")
+print(df_personas)
+    \end{lstlisting}
+
+    \item \textbf{Atributos básicos de un DataFrame}
+    \begin{lstlisting}[language=Python]
+# Explorar el DataFrame
+print("Dimensiones:", df_personas.shape)
+print("\nInformación del DataFrame:")
+print(df_personas.info())
+print("\nPrimeras 3 filas:")
+print(df_personas.head(3))
+print("\nEstadísticas descriptivas:")
+print(df_personas.describe())
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Parte 2: Carga y Exploración de Datos}
+
+\begin{enumerate}
+    \item \textbf{Carga de datos desde CSV}
+    \begin{lstlisting}[language=Python]
+# Cargar datos desde un archivo CSV
+# Nota: Asegúrate de tener el archivo 'ejemplo_datos.csv' en tu directorio
+df = pd.read_csv('ejemplo_datos.csv')
+
+# Explorar los datos cargados
+print("Primeras filas:")
+print(df.head())
+print("\nColumnas disponibles:", df.columns.tolist())
+print("\nTipos de datos:")
+print(df.dtypes)
+    \end{lstlisting}
+
+    \item \textbf{Manejo de valores nulos}
+    \begin{lstlisting}[language=Python]
+# Identificar valores nulos
+print("Valores nulos por columna:")
+print(df.isnull().sum())
+
+# Estrategias para manejar valores nulos
+# Opción 1: Eliminar filas con valores nulos
+df_sin_nulos = df.dropna()
+
+# Opción 2: Rellenar valores nulos
+df_rellenado = df.fillna({
+    'columna_numerica': df['columna_numerica'].mean(),
+    'columna_categorica': 'Desconocido'
+})
+
+print(f"DataFrame original: {df.shape}")
+print(f"DataFrame sin nulos: {df_sin_nulos.shape}")
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Parte 3: Selección y Filtrado de Datos}
+
+\begin{enumerate}
+    \item \textbf{Selección de columnas}
+    \begin{lstlisting}[language=Python]
+# Seleccionar una columna (devuelve una Serie)
+nombres = df['Nombre']
+print("Columna Nombre:")
+print(nombres.head())
+
+# Seleccionar múltiples columnas (devuelve un DataFrame)
+subconjunto = df[['Nombre', 'Edad', 'Ciudad']]
+print("\nSubconjunto de columnas:")
+print(subconjunto.head())
+    \end{lstlisting}
+
+    \item \textbf{Filtrado de filas}
+    \begin{lstlisting}[language=Python]
+# Filtrar por condición
+mayores_30 = df[df['Edad'] > 30]
+print("Personas mayores de 30 años:")
+print(mayores_30)
+
+# Múltiples condiciones
+limenos_mayores_25 = df[(df['Ciudad'] == 'Lima') & (df['Edad'] > 25)]
+print("\nLimeños mayores de 25 años:")
+print(limenos_mayores_25)
+
+# Filtrar con isin()
+ciudades_seleccionadas = df[df['Ciudad'].isin(['Lima', 'Bogotá'])]
+print("\nPersonas de Lima o Bogotá:")
+print(ciudades_seleccionadas)
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Parte 4: Transformación de Datos}
+
+\begin{enumerate}
+    \item \textbf{Operaciones sobre columnas}
+    \begin{lstlisting}[language=Python]
+# Crear una nueva columna
+df['Edad_en_decadas'] = df['Edad'] / 10
+print("DataFrame con nueva columna:")
+print(df.head())
+
+# Aplicar una función a una columna
+df['Nombre_mayusculas'] = df['Nombre'].str.upper()
+print("\nNombres en mayúsculas:")
+print(df[['Nombre', 'Nombre_mayusculas']].head())
+    \end{lstlisting}
+
+    \item \textbf{Agrupación y agregación}
+    \begin{lstlisting}[language=Python]
+# Agrupar por ciudad y calcular estadísticas
+agrupado_ciudad = df.groupby('Ciudad')
+print("Conteo por ciudad:")
+print(agrupado_ciudad.size())
+
+print("\nEdad promedio por ciudad:")
+print(agrupado_ciudad['Edad'].mean())
+
+# Múltiples agregaciones
+resumen = df.groupby('Ciudad').agg({
+    'Edad': ['mean', 'min', 'max', 'count'],
+    'Nombre': 'count'
+})
+print("\nResumen estadístico por ciudad:")
+print(resumen)
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Parte 5: Ordenamiento y Manipulación de Índices}
+
+\begin{enumerate}
+    \item \textbf{Ordenamiento de datos}
+    \begin{lstlisting}[language=Python]
+# Ordenar por una columna
+df_ordenado_edad = df.sort_values('Edad')
+print("Ordenado por edad (ascendente):")
+print(df_ordenado_edad[['Nombre', 'Edad']].head())
+
+# Ordenar por múltiples columnas
+df_ordenado_ciudad_edad = df.sort_values(['Ciudad', 'Edad'], ascending=[True, False])
+print("\nOrdenado por ciudad (A-Z) y edad (descendente):")
+print(df_ordenado_ciudad_edad[['Nombre', 'Ciudad', 'Edad']].head())
+    \end{lstlisting}
+
+    \item \textbf{Manejo de índices}
+    \begin{lstlisting}[language=Python]
+# Establecer una columna como índice
+df_indexado = df.set_index('Nombre')
+print("DataFrame con Nombre como índice:")
+print(df_indexado.head())
+
+# Resetear el índice
+df_reseteado = df_indexado.reset_index()
+print("\nDataFrame con índice reseteado:")
+print(df_reseteado.head())
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Ejercicios de Práctica}
+
+\subsection{Ejercicio 1: Análisis de Datos de Ventas}
+Carga el siguiente dataset de ventas y realiza las operaciones solicitadas:
+
+\begin{lstlisting}[language=Python]
+datos_ventas = {
+    'Fecha': ['2023-01-01', '2023-01-01', '2023-01-02', '2023-01-02', '2023-01-03'],
+    'Producto': ['A', 'B', 'A', 'C', 'B'],
+    'Cantidad': [10, 5, 8, 12, 6],
+    'Precio_Unitario': [25.0, 40.0, 25.0, 30.0, 40.0]
+}
+df_ventas = pd.DataFrame(datos_ventas)
+\end{lstlisting}
+
+\begin{enumerate}
+    \item Calcula el total de ventas por producto (Cantidad * Precio Unitario)
+    \item Encuentra el producto con mayores ventas totales
+    \item Calcula el promedio de ventas por día
+\end{enumerate}
+
+\subsection{Ejercicio 2: Limpieza de Datos}
+Dado el siguiente dataset con problemas, realiza las operaciones de limpieza:
+
+\begin{lstlisting}[language=Python]
+datos_problema = {
+    'Nombre': ['Ana', 'Juan', None, 'María', 'Carlos'],
+    'Edad': [25, 32, 28, None, 35],
+    'Puntuacion': [85, 92, 78, 88, None]
+}
+df_problema = pd.DataFrame(datos_problema)
+\end{lstlisting}
+
+\begin{enumerate}
+    \item Identifica los valores nulos en cada columna
+    \item Rellena los valores nulos en Edad con la mediana y en Puntuacion con la media
+    \item Elimina las filas donde el Nombre es nulo
+\end{enumerate}
+
+\section{Recursos Adicionales}
+
+\begin{itemize}
+    \item \textbf{Documentación oficial de Pandas}: \url{https://pandas.pydata.org/docs/}
+    \item \textbf{Pandas Cheat Sheet}: \url{https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf}
+    \item \textbf{Tutoriales interactivos}: \url{https://www.w3schools.com/python/pandas/default.asp}
+    \item \textbf{Datasets para practicar}: \url{https://www.kaggle.com/datasets}
+\end{itemize}
+
+\section{Conclusión}
+Pandas es una herramienta esencial para cualquier persona que trabaje con datos en Python. Esta guía ha cubierto los conceptos fundamentales, pero hay muchas más funcionalidades por explorar. La práctica constante es clave para dominar esta biblioteca.
+
+\end{document}

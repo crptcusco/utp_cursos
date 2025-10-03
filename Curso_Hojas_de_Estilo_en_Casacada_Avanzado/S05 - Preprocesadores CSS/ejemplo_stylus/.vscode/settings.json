@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    "*.styl": "stylus"
+  },
+  "editor.formatOnSave": true,
+  // Configuración específica para Stylus
+  "stylusSupremacy.insertNewLineAroundImports": true,
+  "stylusSupremacy.insertNewLineAroundBlocks": true,
+  "languageStylus.useSeparator": true,
+  "languageStylus.useBuiltinFunctions": true,
+  "livePreview.defaultPreviewPath": "/index.html"
+}

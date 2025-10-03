@@ -1,0 +1,81 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    frame=single
+}
+
+\title{\textbf{Guía de Laboratorio – Sesión 04} \\ Estructuras de Control en Python}
+\author{Curso de Inteligencia Artificial}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Objetivo de la sesión}
+Al finalizar la sesión, el alumno será capaz de:
+\begin{itemize}
+    \item Utilizar condicionales \texttt{if}, \texttt{elif} y \texttt{else}.
+    \item Implementar bucles \texttt{for} y \texttt{while}.
+    \item Emplear operadores lógicos y relacionales.
+    \item Aplicar control de flujo para resolver problemas prácticos.
+\end{itemize}
+
+\section*{Instrucciones}
+Resuelva los siguientes ejercicios en Python. Trabaje cada uno en un archivo independiente para facilitar su prueba.
+
+\section*{Ejercicios}
+
+\begin{enumerate}[label=\textbf{Ejercicio \arabic*:}, leftmargin=1.5cm]
+    \item \textbf{Número positivo, negativo o cero:} Lea un número y determine si es positivo, negativo o cero.
+    
+    \item \textbf{Mayor de tres números:} Lea tres números y muestre cuál es el mayor.
+    
+    \item \textbf{Par o impar:} Lea un número entero y determine si es par o impar.
+    
+    \item \textbf{Año bisiesto:} Lea un año y determine si es bisiesto.
+    
+    \item \textbf{Tabla de multiplicar:} Lea un número e imprima su tabla de multiplicar del 1 al 10 usando un \texttt{for}.
+    
+    \item \textbf{Contador descendente:} Imprima los números del 10 al 1 usando un \texttt{while}.
+    
+    \item \textbf{Suma de números:} Solicite números al usuario hasta que ingrese 0, luego muestre la suma total.
+    
+    \item \textbf{Adivinar número:} Genere un número aleatorio del 1 al 10 y permita al usuario adivinarlo hasta acertar. Muestre mensajes de ayuda.
+    
+    \item \textbf{Calculadora de factorial:} Lea un número entero y calcule su factorial con un bucle.
+    
+    \item \textbf{Menú interactivo:} Implemente un menú que permita:
+    \begin{itemize}
+        \item Sumar dos números.
+        \item Restar dos números.
+        \item Salir del programa.
+    \end{itemize}
+    Utilice un \texttt{while} para mantener el menú activo.
+\end{enumerate}
+
+\section*{Recomendaciones}
+\begin{itemize}
+    \item Utilice comentarios para explicar cada paso del código.
+    \item Pruebe con distintos valores de entrada.
+    \item No olvide validar las entradas para evitar errores.
+\end{itemize}
+
+\end{document}

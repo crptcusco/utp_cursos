@@ -1,0 +1,237 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+
+% ===== CONFIGURACIÓN =====
+\title{\textbf{Práctica Calificada N° 2 \\ Preprocesadores CSS}}
+\author{\textcolor{blue}{\textbf{Curso: Hojas de Estilo en Cascada Avanzado}}}
+\date{\textbf{Duración: 90 minutos}}
+
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{blue}{RGB}{41,84,163}
+\definecolor{red}{RGB}{192,0,0}
+\definecolor{darkblue}{RGB}{0,51,102}
+
+% ===== ESTILOS =====
+\newtcblisting{codebox}[1][]{
+    colback=codebg,
+    colframe=blue,
+    arc=4pt,
+    boxrule=0.8pt,
+    fonttitle=\bfseries,
+    listing only,
+    listing options={
+        basicstyle=\ttfamily\small,
+        breaklines=true,
+        tabsize=2,
+        literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+                 {ñ}{{\~n}}1 {¿}{{?`}}1 {¡}{{!`}}1
+    },
+    #1
+}
+
+\newcommand{\pregunta}[2]{
+    \section*{Pregunta #1: #2}
+    \vspace{0.3em}
+}
+
+\newcommand{\instrucciones}{
+    \noindent\colorbox{red!10}{
+        \parbox{\dimexpr\textwidth-2\fboxsep}{
+            \textbf{\textcolor{red}{INSTRUCCIONES:}} \\
+            - Tiempo total: 90 minutos \\
+            - Resuelve los 4 problemas en orden \\
+            - Calificación: 5 puntos cada pregunta (Total: 20 puntos) \\
+            - Elige UN preprocesador: SASS, LESS o Stylus \\
+            - Entrega: Archivos HTML + CSS del preprocesador elegido
+        }
+    }
+    \vspace{1em}
+}
+
+\begin{document}
+
+\maketitle
+
+\instrucciones
+
+% ===== PREGUNTA 1 =====
+\pregunta{1}{Variables y Mixins Basicos (5 puntos)}
+Crea un sistema de variables y mixins para una pagina web simple:
+
+\textbf{Requisitos:}
+\begin{itemize}
+\item Define al menos 5 variables (colores, fuentes, espaciado)
+\item Crea 2 mixins: uno para sombras y otro para bordes redondeados
+\item Aplica las variables y mixins en estilos basicos
+\end{itemize}
+
+% \begin{codebox}[title=Ejemplo de estructura]
+% // variables
+% color-primario = #3498db
+% color-secundario = #2ecc71
+% espaciado = 16px
+
+% // mixins
+% sombra()
+%   box-shadow 0 2px 4px rgba(0,0,0,0.1)
+
+% border-redondeado(radio = 4px)
+%   border-radius radio
+
+% // uso
+% .header
+%   background-color color-primario
+%   padding espaciado
+%   sombra()
+% \end{codebox}
+
+% ===== PREGUNTA 2 =====
+\pregunta{2}{Componente de Tarjeta (5 puntos)}
+Crea un componente de tarjeta reutilizable usando tu preprocesador:
+
+\textbf{Requisitos:}
+\begin{itemize}
+\item Usa anidamiento para los estilos de la tarjeta
+\item Incluye variantes (primaria, secundaria)
+\item Aplica los mixins de la pregunta 1
+\item Hazla responsive (diferentes tamanos en movil/desktop)
+\end{itemize}
+
+% \begin{codebox}[title=HTML de ejemplo]
+% <div class="card">
+%   <div class="card-header">
+%     <h3>Titulo de la tarjeta</h3>
+%   </div>
+%   <div class="card-body">
+%     <p>Contenido de la tarjeta</p>
+%   </div>
+%   <div class="card-footer">
+%     <button class="btn">Accion</button>
+%   </div>
+% </div>
+% \end{codebox}
+
+% ===== PREGUNTA 3 =====
+\pregunta{3}{Layout Responsivo (5 puntos)}
+Crea un layout simple de 3 columnas que sea responsivo:
+
+\textbf{Requisitos:}
+\begin{itemize}
+\item 3 columnas en desktop
+\item 2 columnas en tablet
+\item 1 columna en movil
+\item Usar flexbox o grid
+\item Incluir un header y footer
+\end{itemize}
+
+% \begin{codebox}[title=Estructura HTML]
+% <div class="container">
+%   <header class="header">Header</header>
+%   <main class="main-content">
+%     <section class="columna">Columna 1</section>
+%     <section class="columna">Columna 2</section>
+%     <section class="columna">Columna 3</section>
+%   </main>
+%   <footer class="footer">Footer</footer>
+% </div>
+% \end{codebox}
+
+% ===== PREGUNTA 4 =====
+\pregunta{4}{Sistema de Temas Claro/Oscuro (5 puntos)}
+Implementa un sistema de temas claro/oscuro con un boton de cambio:
+
+\textbf{Requisitos:}
+\begin{itemize}
+\item Dos temas: claro y oscuro con paletas de colores diferentes
+\item Boton que cambie entre temas
+\item Los cambios deben aplicar a toda la pagina
+\item Transicion suave entre temas
+\end{itemize}
+
+% \begin{codebox}[title=HTML para el tema]
+% <button id="themeToggle" class="theme-btn">
+%   <span class="theme-icon">Modo Oscuro</span>
+% </button>
+% \end{codebox}
+
+% \begin{codebox}[title=JavaScript basico]
+% const themeBtn = document.getElementById('themeToggle');
+% themeBtn.addEventListener('click', () => {
+%   document.body.classList.toggle('dark-theme');
+% });
+% \end{codebox}
+
+% ===== RUBRICA =====
+\section*{Criterios de Evaluacion - Rubrica (20 puntos)}
+
+\subsection*{Pregunta 1: Variables y Mixins (5 puntos)}
+\begin{itemize}
+\item \textbf{2pts:} Variables correctamente definidas y usadas
+\item \textbf{2pts:} Mixins funcionales y bien aplicados
+\item \textbf{1pts:} Sintaxis correcta del preprocesador
+\end{itemize}
+
+\subsection*{Pregunta 2: Componente de Tarjeta (5 puntos)}
+\begin{itemize}
+\item \textbf{2pts:} Anidamiento correcto y organizado
+\item \textbf{2pts:} Variantes funcionales y diseno responsive
+\item \textbf{1pts:} Integracion con mixins anteriores
+\end{itemize}
+
+\subsection*{Pregunta 3: Layout Responsivo (5 puntos)}
+\begin{itemize}
+\item \textbf{2pts:} Layout funcional en todos los breakpoints
+\item \textbf{2pts:} Media queries bien implementadas
+\item \textbf{1pts:} Estructura HTML semantica
+\end{itemize}
+
+\subsection*{Pregunta 4: Temas Claro/Oscuro (5 puntos)}
+\begin{itemize}
+\item \textbf{2pts:} Boton funcional que cambia temas
+\item \textbf{2pts:} Paletas de colores coherentes para ambos temas
+\item \textbf{1pts:} Transicion suave entre temas
+\end{itemize}
+
+% \section*{Ejemplo de Solucion - Tema Claro/Oscuro}
+
+% \begin{codebox}[title=Stylus para temas]
+% // Variables para tema claro
+% bg-claro = #ffffff
+% texto-claro = #333333
+% primario-claro = #3498db
+
+% // Variables para tema oscuro  
+% bg-oscuro = #1a1a1a
+% texto-oscuro = #ffffff
+% primario-oscuro = #5dade2
+
+% // Mixin para aplicar temas
+% tema(bg, texto, primario)
+%   background-color bg
+%   color texto
+  
+%   .card
+%     background-color lighten(bg, 5%)
+%     border 1px solid darken(bg, 10%)
+  
+%   .btn
+%     background-color primario
+%     color texto
+
+% // Tema claro (por defecto)
+% body
+%   tema(bg-claro, texto-claro, primario-claro)
+%   transition all 0.3s ease
+
+% // Tema oscuro
+% body.dark-theme
+%   tema(bg-oscuro, texto-oscuro, primario-oscuro)
+% \end{codebox}
+
+\end{document}

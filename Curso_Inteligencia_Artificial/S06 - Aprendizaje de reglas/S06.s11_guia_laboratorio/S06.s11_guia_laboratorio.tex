@@ -1,0 +1,331 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{enumitem}
+\geometry{margin=1in}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    frame=single
+}
+
+\lstset{style=mystyle}
+
+\title{Curso: Inteligencia Artificial \\Guía de Laboratorio: Aprendizaje de Reglas en IA}
+\author{Docente: Carlos R. P. Tovar}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+El aprendizaje de reglas es una técnica fundamental en inteligencia artificial que permite extraer conocimiento en forma de reglas "SI-ENTONCES" a partir de datos. Estas reglas son interpretables y se asemejan al razonamiento humano, lo que las hace valiosas para sistemas expertos, diagnóstico médico y toma de decisiones. En esta guía integrada, exploraremos tres enfoques diferentes para el aprendizaje de reglas: algoritmos básicos (OneR), árboles de decisión y programación lógica con Prolog.
+
+\section{Objetivos del Laboratorio}
+Al completar este laboratorio, serás capaz de:
+\begin{itemize}
+    \item Comprender los fundamentos del aprendizaje de reglas
+    \item Implementar algoritmos básicos de aprendizaje de reglas (OneR)
+    \item Utilizar árboles de decisión para generar conjuntos de reglas
+    \item Representar y consultar reglas en un lenguaje declarativo (Prolog)
+    \item Evaluar la calidad de conjuntos de reglas aprendidas
+    \item Comparar enfoques simbólicos y estadísticos en el aprendizaje de reglas
+    \item Aplicar estas técnicas en problemas de clasificación
+\end{itemize}
+
+\section{Requisitos}
+\begin{itemize}
+    \item Python 3.6 o superior
+    \item Bibliotecas Python: pandas, scikit-learn, matplotlib
+    \item SWI-Prolog (para los ejercicios de programación lógica)
+    \item Conocimientos básicos de pandas y scikit-learn
+    \item Datasets: Titanic, Iris (disponibles en línea)
+\end{itemize}
+
+\section{Parte 1: Algoritmos Básicos de Aprendizaje de Reglas}
+
+\subsection{Preparación de Datos}
+\begin{enumerate}
+    \item \textbf{Importación de bibliotecas}: 
+    \begin{lstlisting}[language=Python]
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+import matplotlib.pyplot as plt
+    \end{lstlisting}
+    
+    \item \textbf{Carga y preprocesamiento de datos}:
+    \begin{lstlisting}[language=Python]
+# Cargar datos
+df = pd.read_csv('titanic.csv')
+
+# Preprocesamiento básico
+df['Age'].fillna(df['Age'].mean(), inplace=True)
+df['Sex'] = df['Sex'].map({'male': 0, 'female': 1})
+df = pd.get_dummies(df, columns=['Embarked'], drop_first=True)
+
+# Seleccionar características relevantes
+features = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked_Q', 'Embarked_S']
+X = df[features]
+y = df['Survived']
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Implementación de Algoritmo OneR}
+\begin{enumerate}
+    \item \textbf{Implementación de OneR}:
+    \begin{lstlisting}[language=Python]
+def one_rule_algorithm(X, y, feature_name):
+    # Encontrar el mejor umbral para la característica
+    best_accuracy = 0
+    best_threshold = 0
+    
+    for threshold in np.linspace(X[feature_name].min(), X[feature_name].max(), 100):
+        predictions = (X[feature_name] > threshold).astype(int)
+        accuracy = accuracy_score(y, predictions)
+        
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            best_threshold = threshold
+    
+    return best_threshold, best_accuracy
+
+# Probar con diferentes características
+for feature in ['Age', 'Fare', 'Pclass']:
+    threshold, accuracy = one_rule_algorithm(X, y, feature)
+    print(f"Característica: {feature}, Umbral: {threshold:.2f}, Precisión: {accuracy:.2f}")
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Parte 2: Árboles de Decisión para Generación de Reglas}
+
+\subsection{Árboles de Decisión con scikit-learn}
+\begin{enumerate}
+    \item \textbf{Entrenar árbol de decisión con profundidad limitada}:
+    \begin{lstlisting}[language=Python]
+# Entrenar árbol de decisión con una sola regla
+model = DecisionTreeClassifier(max_depth=1)
+model.fit(X, y)
+
+# Evaluar el modelo
+y_pred = model.predict(X)
+accuracy = accuracy_score(y, y_pred)
+print(f"Precisión del árbol de una regla: {accuracy:.2f}")
+    \end{lstlisting}
+    
+    \item \textbf{Visualizar la regla}:
+    \begin{lstlisting}[language=Python]
+from sklearn.tree import plot_tree
+
+plt.figure(figsize=(10, 8))
+plot_tree(model, feature_names=features, class_names=['No Sobrevivió', 'Sobrevivió'], filled=True)
+plt.title("Árbol de Decisión de Una Regla")
+plt.show()
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Extracción de Reglas de Árboles de Decisión}
+\begin{enumerate}
+    \item \textbf{Uso del dataset Iris}:
+    \begin{lstlisting}[language=Python]
+from sklearn.datasets import load_iris
+from sklearn.tree import export_text
+
+# Cargar dataset Iris
+X_iris, y_iris = load_iris(return_X_y=True)
+feature_names = load_iris().feature_names
+target_names = load_iris().target_names
+
+# Entrenar árbol con profundidad 3
+clf = DecisionTreeClassifier(max_depth=3, random_state=42)
+clf.fit(X_iris, y_iris)
+
+# Extraer reglas
+rules = export_text(clf, feature_names=feature_names)
+print("Reglas del árbol de decisión:")
+print(rules)
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Parte 3: Implementación Manual de Sistemas de Reglas}
+
+\subsection{Reglas Simples}
+\begin{enumerate}
+    \item \textbf{Clasificación por edades}:
+    \begin{lstlisting}[language=Python]
+def clasificar_edad(edad):
+    if edad < 12:
+        return "Niño"
+    elif edad < 18:
+        return "Joven"
+    elif edad < 60:
+        return "Adulto"
+    else:
+        return "Anciano"
+
+print(clasificar_edad(25))  # Adulto
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Reglas con Múltiples Condiciones}
+\begin{enumerate}
+    \item \textbf{Clasificador de frutas}:
+    \begin{lstlisting}[language=Python]
+def clasificar_fruta(color, tamano, sabor):
+    if color == "rojo" and sabor == "dulce":
+        return "Manzana"
+    elif color == "naranja" and tamano == "mediano":
+        return "Naranja"
+    elif color == "amarillo" and tamano == "largo":
+        return "Plátano"
+    else:
+        return "Desconocido"
+
+print(clasificar_fruta("rojo", "pequeño", "dulce"))
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Sistema de Reglas con Prioridad}
+\begin{enumerate}
+    \item \textbf{Sistema de aprobación de créditos}:
+    \begin{lstlisting}[language=Python]
+def evaluar_credito(ingreso, deuda, historial):
+    # Regla 1: Prioridad alta
+    if ingreso > 5000 and deuda < 2000 and historial == "bueno":
+        return "Aprobado"
+    # Regla 2: Prioridad media
+    elif ingreso > 3000 and deuda < 3000:
+        return "Revisión manual"
+    # Regla 3: Prioridad baja (default)
+    else:
+        return "Rechazado"
+
+print(evaluar_credito(6000, 1500, "bueno"))
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Parte 4: Programación Lógica con Prolog}
+
+\subsection{Base de Conocimiento y Reglas en Prolog}
+\begin{enumerate}
+    \item \textbf{Sistema de diagnóstico médico}:
+    \begin{lstlisting}[language=Prolog]
+% Base de hechos
+fiebre(juan).
+tos(juan).
+dolor_cabeza(maria).
+congestion(luis).
+
+% Reglas
+gripe(X) :- fiebre(X), tos(X).
+resfriado(X) :- tos(X), congestion(X), \+ fiebre(X).
+migrana(X) :- dolor_cabeza(X), \+ fiebre(X).
+
+% Consultas de ejemplo:
+% ?- gripe(juan).      % true
+% ?- migrana(maria).   % true
+% ?- resfriado(luis).  % true
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Parte 5: Evaluación de Reglas}
+
+\subsection{Cálculo de Métricas}
+\begin{enumerate}
+    \item \textbf{Evaluación de reglas}:
+    \begin{lstlisting}[language=Python]
+def evaluate_rule(X, y, feature, threshold, operator='>'):
+    if operator == '>':
+        predictions = (X[feature] > threshold).astype(int)
+    else:
+        predictions = (X[feature] <= threshold).astype(int)
+    
+    accuracy = accuracy_score(y, predictions)
+    coverage = len(predictions) / len(y)
+    
+    # Calcular precisión, recall y F1-score
+    tn, fp, fn, tp = confusion_matrix(y, predictions).ravel()
+    precision = tp / (tp + fp) if (tp + fp) > 0 else 0
+    recall = tp / (tp + fn) if (tp + fn) > 0 else 0
+    f1 = 2 * (precision * recall) / (precision + recall) if (precision + recall) > 0 else 0
+    
+    return accuracy, coverage, precision, recall, f1
+
+# Evaluar regla para edad
+accuracy, coverage, precision, recall, f1 = evaluate_rule(X, y, 'Age', 30, '>')
+print(f"Precisión: {accuracy:.2f}, Cobertura: {coverage:.2f}")
+print(f"Precisión: {precision:.2f}, Recall: {recall:.2f}, F1: {f1:.2f}")
+    \end{lstlisting}
+\end{enumerate}
+
+\subsection{Comparación de Enfoques}
+\begin{enumerate}
+    \item \textbf{Comparación entre árbol de decisión y reglas manuales}:
+    \begin{lstlisting}[language=Python]
+# Crear datos de prueba
+datos_edad = [(10, "Niño"), (15, "Joven"), (25, "Adulto"), (70, "Anciano")]
+
+# Evaluar reglas manuales
+correctos = 0
+for edad, esperado in datos_edad:
+    if clasificar_edad(edad) == esperado:
+        correctos += 1
+
+precision_manual = correctos / len(datos_edad)
+print(f"Precisión del sistema manual: {precision_manual:.2f}")
+
+# Comparar con árbol de decisión (usando Iris como ejemplo)
+y_pred_iris = clf.predict(X_iris)
+precision_arbol = accuracy_score(y_iris, y_pred_iris)
+print(f"Precisión del árbol de decisión: {precision_arbol:.2f}")
+    \end{lstlisting}
+\end{enumerate}
+
+\section{Conclusión}
+En esta guía de laboratorio unificada, hemos explorado tres enfoques diferentes para el aprendizaje de reglas en inteligencia artificial. Hemos implementado el algoritmo OneR para reglas simples, utilizado árboles de decisión para generar conjuntos de reglas automáticamente, creado sistemas de reglas manualmente en Python, y explorado la programación lógica con Prolog para representar conocimiento mediante reglas.
+
+Cada enfoque tiene sus ventajas: los algoritmos automáticos como OneR y los árboles de decisión son excelentes para extraer patrones de datos, mientras que los sistemas de reglas manuales y la programación lógica permiten incorporar conocimiento experto y son más interpretables.
+
+El aprendizaje de reglas es una técnica poderosa para crear modelos interpretables que se asemejan al razonamiento humano, siendo valiosa en aplicaciones donde la transparencia del modelo es importante, como en sistemas expertos, diagnóstico médico y toma de decisiones.
+
+\section{Recursos Adicionales}
+\begin{itemize}
+    \item Documentación de scikit-learn: https://scikit-learn.org/
+    \item SWI-Prolog: https://www.swi-prolog.org/
+    \item Libro: "Machine Learning" by Tom Mitchell (Capítulo 3)
+    \item Paper: "Fast Effective Rule Induction" (Algoritmo RIPPER)
+    \item Libro: "Programming in Prolog" by Clocksin and Mellish
+\end{itemize}
+
+\end{document} 

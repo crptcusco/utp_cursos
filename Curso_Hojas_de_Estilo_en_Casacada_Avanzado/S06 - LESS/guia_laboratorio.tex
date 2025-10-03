@@ -1,0 +1,656 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% ===== CONFIGURACIÓN =====
+\title{\textbf{Guía de Laboratorio: \\ Preprocesador LESS}}
+\author{\textcolor{blue}{\textbf{Curso: Hojas de Estilo en Cascada Avanzado}}}
+\date{\textbf{Duración: 90 minutos}}
+
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{blue}{RGB}{41,84,163}
+\definecolor{red}{RGB}{192,0,0}
+\definecolor{darkblue}{RGB}{0,51,102}
+\definecolor{lessgreen}{RGB}{40,160,90}
+
+% ===== ESTILOS =====
+\lstdefinestyle{lessstyle}{
+    backgroundcolor=\color{codebg},
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{gray},
+    tabsize=2,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{lessgreen},
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+}
+
+\newtcblisting{codebox}[1][]{
+    colback=codebg,
+    colframe=blue,
+    arc=4pt,
+    boxrule=0.8pt,
+    fonttitle=\bfseries,
+    listing only,
+    listing options={style=lessstyle},
+    #1
+}
+
+\newcommand{\ejercicio}[2]{
+    \section*{Ejercicio #1: #2}
+    \vspace{0.3em}
+}
+
+\newcommand{\instrucciones}{
+    \noindent\colorbox{blue!10}{
+        \parbox{\dimexpr\textwidth-2\fboxsep}{
+            \textbf{\textcolor{darkblue}{OBJETIVOS DE LA SESIÓN:}} \\
+            - Comprender los fundamentos del preprocesador LESS \\
+            - Aprender a utilizar variables, mixins y funciones \\
+            - Implementar anidamiento y modularización \\
+            - Configurar un entorno de desarrollo para LESS \\
+            - Compilar archivos LESS a CSS \\
+            \vspace{0.5em}
+            \textbf{\textcolor{darkblue}{RECURSOS NECESARIOS:}} \\
+            - Editor de código (VS Code recomendado) \\
+            - Node.js y npm instalados \\
+            - Extensión "LESS" para el editor \\
+            - Navegador web actualizado
+        }
+    }
+    \vspace{1em}
+}
+
+\begin{document}
+
+\maketitle
+
+\instrucciones
+
+% ===== CONFIGURACIÓN INICIAL =====
+\section*{Configuración del Entorno}
+
+\subsection*{Instalación de LESS}
+\begin{enumerate}
+    \item Verificar que Node.js esté instalado: \texttt{node -v}
+    \item Instalar LESS globalmente: \texttt{npm install -g less}
+    \item Verificar la instalación: \texttt{lessc -v}
+\end{enumerate}
+
+\subsection*{Estructura de Archivos}
+Crea la siguiente estructura de carpetas:
+\begin{codebox}[title=Estructura de directorios]
+proyecto-less/
+├── index.html
+├── styles/
+│   ├── main.less
+│   ├── variables.less
+│   ├── mixins.less
+│   └── componentes/
+│       ├── botones.less
+│       ├── tarjetas.less
+│       └── formularios.less
+└── css/
+    └── main.css (generado automáticamente)
+\end{codebox}
+
+% ===== EJERCICIO 1 =====
+\ejercicio{1}{Variables y Operaciones (15 minutos)}
+
+Crea el archivo \texttt{variables.less} y define las siguientes variables:
+
+\begin{codebox}[title=styles/variables.less]
+// Colores principales
+@color-primario: #3498db;
+@color-secundario: #2ecc71;
+@color-acento: #e74c3c;
+
+// Escala de grises
+@color-texto: #333333;
+@color-fondo: #f5f5f5;
+@color-borde: #dddddd;
+
+// Tipografía
+@fuente-principal: 'Helvetica Neue', Arial, sans-serif;
+@tamano-base: 16px;
+@linea-altura: 1.5;
+
+// Espaciado
+@espaciado: 20px;
+@espaciado-medio: @espaciado * 0.75;
+@espaciado-pequeno: @espaciado * 0.5;
+
+// Tamaños de pantalla
+@movil: 480px;
+@tablet: 768px;
+@desktop: 1024px;
+@desktop-xl: 1200px;
+\end{codebox}
+
+Ahora crea el archivo \texttt{main.less} y utiliza las variables:
+
+\begin{codebox}[title=styles/main.less]
+// Importar variables
+@import "variables";
+
+// Estilos base usando variables
+body {
+  font-family: @fuente-principal;
+  font-size: @tamano-base;
+  line-height: @linea-altura;
+  color: @color-texto;
+  background-color: @color-fondo;
+  margin: 0;
+  padding: @espaciado;
+}
+
+.contenedor {
+  max-width: @desktop;
+  margin: 0 auto;
+  padding: @espaciado;
+  
+  // Operaciones matemáticas
+  @ancho-interno: @desktop - (@espaciado * 2);
+  width: @ancho-interno;
+}
+
+// Uso de funciones de color
+.header {
+  background-color: @color-primario;
+  color: lighten(@color-primario, 40%);
+  padding: @espaciado;
+  border-bottom: 2px solid darken(@color-primario, 10%);
+}
+\end{codebox}
+
+% ===== EJERCICIO 2 =====
+\ejercicio{2}{Mixins y Funciones (20 minutos)}
+
+Crea el archivo \texttt{mixins.less} y añade los siguientes mixins:
+
+\begin{codebox}[title=styles/mixins.less]
+// Mixin para sombras
+.sombra(@x: 0, @y: 2px, @blur: 4px, @color: rgba(0,0,0,0.1)) {
+  box-shadow: @x @y @blur @color;
+}
+
+// Mixin para bordes redondeados
+.border-redondeado(@radio: 4px) {
+  border-radius: @radio;
+}
+
+// Mixin para transiciones
+.transicion(@propiedad: all, @duracion: 0.3s, @timing: ease) {
+  transition: @propiedad @duracion @timing;
+}
+
+// Mixin para flexbox
+.flexbox(@direccion: row, @justify: flex-start, @align: stretch) {
+  display: flex;
+  flex-direction: @direccion;
+  justify-content: @justify;
+  align-items: @align;
+}
+
+// Mixin responsivo
+.responsive(@dispositivo, @contenido) {
+  @media (min-width: @dispositivo) {
+    @contenido();
+  }
+}
+
+// Mixin con guard clauses
+.texto-contraste(@color) when (lightness(@color) > 50%) {
+  color: #000;
+}
+
+.texto-contraste(@color) when (lightness(@color) <= 50%) {
+  color: #fff;
+}
+\end{codebox}
+
+Ahora utiliza estos mixins en tu archivo principal:
+
+\begin{codebox}[title=styles/main.less (continuación)]
+// Importar mixins
+@import "mixins";
+
+// Aplicar mixins
+.card {
+  .border-redondeado(8px);
+  .sombra(0, 4px, 8px, rgba(0,0,0,0.1));
+  .transicion(box-shadow, 0.2s, ease-out);
+  background-color: #fff;
+  padding: @espaciado;
+  margin-bottom: @espaciado;
+  
+  &:hover {
+    .sombra(0, 6px, 12px, rgba(0,0,0,0.15));
+  }
+}
+
+.boton {
+  .border-redondeado(4px);
+  .transicion();
+  display: inline-block;
+  padding: @espaciado-pequeno @espaciado;
+  border: none;
+  cursor: pointer;
+  
+  &-primario {
+    background-color: @color-primario;
+    .texto-contraste(@color-primario);
+    
+    &:hover {
+      background-color: darken(@color-primario, 10%);
+    }
+  }
+  
+  &-secundario {
+    background-color: @color-secundario;
+    .texto-contraste(@color-secundario);
+    
+    &:hover {
+      background-color: darken(@color-secundario, 10%);
+    }
+  }
+}
+\end{codebox}
+
+% ===== EJERCICIO 3 =====
+\ejercicio{3}{Anidamiento y Selectores (15 minutos)}
+
+Aprovecha el anidamiento de LESS para organizar mejor tus estilos:
+
+\begin{codebox}[title=styles/main.less (continuación)]
+// Anidamiento de selectores
+.menu {
+  .flexbox(row, space-between, center);
+  list-style: none;
+  padding: 0;
+  margin: 0 0 @espaciado 0;
+  
+  // Selector hijo
+  > li {
+    margin-right: @espaciado;
+    
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  
+  // Selector de elementos anidados
+  a {
+    text-decoration: none;
+    color: @color-texto;
+    padding: @espaciado-pequeno;
+    .transicion(color);
+    
+    &:hover {
+      color: @color-primario;
+    }
+  }
+  
+  // Selector con & para estados especiales
+  &.menu-vertical {
+    flex-direction: column;
+    
+    li {
+      margin-right: 0;
+      margin-bottom: @espaciado-pequeno;
+    }
+  }
+}
+
+// Anidamiento de media queries
+.contenedor {
+  width: 100%;
+  
+  .responsive(@tablet, {
+    width: 90%;
+  });
+  
+  .responsive(@desktop, {
+    width: 80%;
+    max-width: 1200px;
+  });
+}
+
+// Uso de & para modificar elementos
+.boton {
+  // ... estilos base anteriores ...
+  
+  &.grande {
+    padding: @espaciado @espaciado * 1.5;
+    font-size: @tamano-base * 1.25;
+  }
+  
+  &.redondo {
+    .border-redondeado(50px);
+  }
+  
+  // Estados del botón
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+\end{codebox}
+
+% ===== EJERCICIO 4 =====
+\ejercicio{4}{Modularización y Organización (20 minutos)}
+
+Crea componentes modulares y organízalos en archivos separados:
+
+\begin{codebox}[title=styles/componentes/botones.less]
+// Botones personalizados
+.boton-especial {
+  .boton;
+  position: relative;
+  overflow: hidden;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    .transicion(left);
+  }
+  
+  &:hover::after {
+    left: 100%;
+  }
+}
+
+.grupo-botones {
+  .flexbox(row, flex-start, center);
+  gap: @espaciado-pequeno;
+  
+  .boton {
+    margin-right: 0;
+  }
+  
+  &.vertical {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+\end{codebox}
+
+\begin{codebox}[title=styles/componentes/tarjetas.less]
+// Estilos para tarjetas
+.tarjeta {
+  .card; // Extiende el mixin .card
+  
+  &-titulo {
+    font-size: @tamano-base * 1.5;
+    margin-top: 0;
+    margin-bottom: @espaciado-pequeno;
+    color: @color-primario;
+  }
+  
+  &-contenido {
+    margin-bottom: @espaciado;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  &-acciones {
+    .flexbox(row, flex-end, center);
+    gap: @espaciado-pequeno;
+    margin-top: @espaciado;
+    padding-top: @espaciado;
+    border-top: 1px solid @color-borde;
+  }
+  
+  // Variantes de tarjetas
+  &.sombra-elevada {
+    .sombra(0, 8px, 16px, rgba(0,0,0,0.15));
+  }
+  
+  &.sin-borde {
+    border: none;
+  }
+}
+\end{codebox}
+
+Ahora actualiza tu archivo principal para importar estos componentes:
+
+\begin{codebox}[title=styles/main.less (continuación)]
+// Importar componentes
+@import "componentes/botones";
+@import "componentes/tarjetas";
+@import "componentes/formularios";
+
+// Estilos específicos de la página
+.seccion-destacada {
+  background-color: lighten(@color-primario, 40%);
+  padding: @espaciado * 2;
+  margin-bottom: @espaciado * 2;
+  .border-redondeado(8px);
+  .sombra(0, 4px, 8px, rgba(0,0,0,0.1));
+  
+  h2 {
+    color: @color-primario;
+    margin-top: 0;
+  }
+  
+  // Media query anidada
+  .responsive(@tablet, {
+    padding: @espaciado * 3;
+    
+    h2 {
+      font-size: @tamano-base * 2;
+    }
+  });
+}
+
+// Utilidades de espaciado
+.mt-0 { margin-top: 0 !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.mt-1 { margin-top: @espaciado-pequeno !important; }
+.mb-1 { margin-bottom: @espaciado-pequeno !important; }
+.mt-2 { margin-top: @espaciado !important; }
+.mb-2 { margin-bottom: @espaciado !important; }
+.mt-3 { margin-top: @espaciado * 1.5 !important; }
+.mb-3 { margin-bottom: @espaciado * 1.5 !important; }
+\end{codebox}
+
+% ===== EJERCICIO 5 =====
+\ejercicio{5}{Compilación y Optimización (10 minutos)}
+
+Aprende a compilar tus archivos LESS de diferentes maneras:
+
+\begin{codebox}[title=Compilación por línea de comandos]
+# Compilar un archivo específico
+lessc styles/main.less css/main.css
+
+# Compilar con compresión
+lessc styles/main.less css/main.min.css --clean-css
+
+# Compilar con source maps para depuración
+lessc styles/main.less css/main.css --source-map
+
+# Compilar con watch (necesita less-watch-compiler)
+npm install -g less-watch-compiler
+less-watch-compiler styles css
+
+# Usando package.json scripts
+{
+  "scripts": {
+    "build:less": "lessc styles/main.less css/main.css",
+    "build:less:min": "lessc styles/main.less css/main.min.css --clean-css",
+    "watch:less": "less-watch-compiler styles css"
+  }
+}
+\end{codebox}
+
+Crea un archivo HTML básico para probar tus estilos:
+
+\begin{codebox}[title=index.html]
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Práctica con LESS</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="contenedor">
+    <header>
+      <ul class="menu">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Servicios</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </header>
+    
+    <div class="seccion-destacada">
+      <h2>Bienvenido a LESS</h2>
+      <p>Esto es una sección destacada con estilos definidos en LESS.</p>
+    </div>
+    
+    <div class="tarjeta">
+      <h3 class="tarjeta-titulo">Tarjeta de ejemplo</h3>
+      <div class="tarjeta-contenido">
+        <p>Esta es una tarjeta con estilos definidos en LESS.</p>
+      </div>
+      <div class="tarjeta-acciones">
+        <button class="boton boton-primario">Aceptar</button>
+        <button class="boton boton-secundario">Cancelar</button>
+      </div>
+    </div>
+    
+    <div class="grupo-botones">
+      <button class="boton boton-primario">Botón 1</button>
+      <button class="boton boton-secundario">Botón 2</button>
+      <button class="boton-especial">Botón especial</button>
+    </div>
+  </div>
+</body>
+</html>
+\end{codebox}
+
+% ===== DESAFÍO FINAL =====
+\section*{Desafío: Crear un Tema Completo con LESS}
+
+Crea un tema completo utilizando todas las características de LESS que has aprendido:
+
+\begin{enumerate}
+  \item Define un sistema de colores con variables para claro/oscuro
+  \item Crea mixins para componentes reutilizables
+  \item Implementa un sistema de grid responsivo
+  \item Crea variantes de componentes usando parámetros en mixins
+  \item Organiza el código en archivos modulares
+  \item Compila con opciones de optimización
+\end{enumerate}
+
+\begin{codebox}[title=Ejemplo de tema con modo claro/oscuro]
+// variables.less
+// Modo claro
+@modo-claro: {
+  @fondo: #ffffff;
+  @texto: #333333;
+  @borde: #dddddd;
+  @primario: #3498db;
+};
+
+// Modo oscuro
+@modo-oscuro: {
+  @fondo: #222222;
+  @texto: #eeeeee;
+  @borde: #444444;
+  @primario: #5dade2;
+};
+
+// Función para aplicar modo
+.aplicar-modo(@modo) {
+  @fondo: @modo[@fondo];
+  @texto: @modo[@texto];
+  @borde: @modo[@borde];
+  @primario: @modo[@primario];
+}
+\end{codebox}
+
+\begin{codebox}[title=Ejemplo de tema con modo claro/oscuro continuación]
+// Mixin para modo claro
+.modo-claro() {
+  .aplicar-modo(@modo-claro);
+  
+  body {
+    background-color: @fondo;
+    color: @texto;
+  }
+  
+  .card {
+    background-color: lighten(@fondo, 5%);
+    border: 1px solid @borde;
+  }
+}
+
+// Mixin para modo oscuro
+.modo-oscuro() {
+  .aplicar-modo(@modo-oscuro);
+  
+  body {
+    background-color: @fondo;
+    color: @texto;
+  }
+  
+  .card {
+    background-color: lighten(@fondo, 5%);
+    border: 1px solid @borde;
+  }
+}
+
+// Aplicar modo según preferencia del usuario
+@media (prefers-color-scheme: light) {
+  .modo-claro();
+}
+
+@media (prefers-color-scheme: dark) {
+  .modo-oscuro();
+}
+
+// Clase para forzar modo
+.modo-claro {
+  .modo-claro();
+}
+
+.modo-oscuro {
+  .modo-oscuro();
+}
+\end{codebox}
+
+% ===== RECURSOS ADICIONALES =====
+\section*{Recursos Adicionales}
+
+\begin{itemize}
+  \item \textbf{Documentación oficial:} \url{http://lesscss.org/}
+  \item \textbf{Repositorio GitHub:} \url{https://github.com/less/less.js}
+  \item \textbf{Playground online:} \url{http://less2css.org/}
+  \item \textbf{Extensión para VS Code:} "LESS" by mrmlnc
+  \item \textbf{Ejemplos avanzados:} \url{https://lesscss.org/features/}
+\end{itemize}
+
+\end{document}

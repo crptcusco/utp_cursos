@@ -1,0 +1,195 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+
+% ===== CONFIGURACIÓN =====
+\title{\textbf{Práctica Calificada N° 1 }}
+\author{\textcolor{blue}{\textbf{Curso: Hojas de Estilo en Cascada Avanzado}}}
+\date{\textbf{Unidad 1: Diseño Responsivo}}
+
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{blue}{RGB}{41,84,163}
+\definecolor{red}{RGB}{192,0,0}
+\definecolor{darkblue}{RGB}{0,51,102}
+
+% ===== ESTILOS =====
+\newtcblisting{codebox}[1][]{
+    colback=codebg,
+    colframe=blue,
+    arc=4pt,
+    boxrule=0.8pt,
+    fonttitle=\bfseries,
+    listing only,
+    listing options={
+        basicstyle=\ttfamily\small,
+        breaklines=true,
+        tabsize=2
+    },
+    #1
+}
+
+\newcommand{\pregunta}[2]{
+    \section*{Pregunta #1: #2}
+    \vspace{0.3em}
+}
+
+\newcommand{\instrucciones}{
+    \noindent\colorbox{red!10}{
+        \parbox{\dimexpr\textwidth-2\fboxsep}{
+            \textbf{\textcolor{red}{INSTRUCCIONES:}} \\
+            - Tiempo total: 90 minutos \\
+            - Resuelve los 4 problemas en orden \\
+            - Calificación: 5 puntos cada pregunta \\
+            - Se evalúa: funcionalidad, semántica HTML, eficiencia CSS y diseño responsivo \\
+            - Entrega: Archivos HTML + CSS comprimidos
+        }
+    }
+    \vspace{1em}
+}
+
+\begin{document}
+
+\maketitle
+
+\instrucciones
+
+% ========== VERSIÓN A ==========
+% \pregunta{1}{E-commerce Layout con Grid CSS}
+% Crea el layout de una tienda online usando Grid CSS que incluya:
+% \begin{itemize}
+% \item Header con logo, buscador y carrito
+% \item Sidebar izquierdo con categorías de productos
+% \item Área principal con grid de productos (4 columnas desktop)
+% \item Footer con múltiples columnas de información
+% \item Layout responsivo que colapse a 1 columna en mobile
+% \end{itemize}
+
+% \pregunta{2}{Galería de Imágenes Responsiva con Flexbox}
+% Crea una galería de imágenes responsiva usando Flexbox que:
+% \begin{itemize}
+% \item Muestre 6 imágenes por fila en desktop (1400px+)
+% \item Muestre 4 imágenes por fila en tablet (900px-1399px)
+% \item Muestre 2 imágenes por fila en mobile (<900px)
+% \item Implementar efecto lightbox al hacer clic en imágenes
+% \item Usar \textbf{flex-grow} y \textbf{flex-shrink} apropiadamente
+% \end{itemize}
+
+% \pregunta{3}{Formulario de Checkout Responsivo}
+% Diseña un formulario de checkout para e-commerce que incluya:
+% \begin{itemize}
+% \item Sección de información de envío (2 columnas desktop)
+% \item Sección de método de pago con opciones (tarjeta, PayPal, etc.)
+% \item Resumen del pedido con precios y total
+% \item Validación HTML5 para todos los campos de pago
+% \item Diseño que se apile verticalmente en mobile
+% \end{itemize}
+
+% \pregunta{4}{Panel de Administración Híbrido}
+% Crea un panel de administración que combine Grid y Flexbox:
+% \begin{itemize}
+% \item Sidebar colapsable con menú de administración
+% \item Header con breadcrumbs y notificaciones
+% \item Área principal con estadísticas en grid 2x2
+% \item Tabla de datos responsiva que permita scroll horizontal
+% \item Modal de edición que use position: fixed
+% \end{itemize}
+
+% ========== VERSIÓN B ==========
+\pregunta{1}{Blog Responsivo con Grid Areas}
+Crea la estructura de un blog moderno usando CSS Grid:
+\begin{itemize}
+\item Header con navegación y modo oscuro/claro
+\item Main con artículos en grid de 2 columnas (desktop)
+\item Sidebar derecho con biografía del autor y redes sociales
+\item Footer con newsletter y copyright
+\item Usar \textbf{grid-template-areas} para definir el layout
+\item Navegación debe convertirse en menú hamburguesa en mobile
+\end{itemize}
+
+\pregunta{2}{Portafolio de Trabajos con Flexbox}
+Diseña una sección de portafolio usando Flexbox que:
+\begin{itemize}
+\item Muestre proyectos en 3 columnas desktop, 2 tablet, 1 mobile
+\item Cada proyecto debe tener imagen, título, categorías y enlace
+\item Implementar filtros por categoría usando Flexbox
+\item Efecto hover que muestre descripción del proyecto
+\item Usar \textbf{flex-order} para destacar proyectos importantes
+\end{itemize}
+
+\pregunta{3}{Sistema de Reservas con Validación}
+Crea un formulario de reservas para un restaurante que incluya:
+\begin{itemize}
+\item Selección de fecha y hora con input type="datetime-local"
+\item Selección de número de personas con input type="number"
+\item Campos para información de contacto con validación
+\item Diseño en 2 columnas para desktop, 1 para mobile
+\item Mensajes de error personalizados para horarios no disponibles
+\end{itemize}
+
+\pregunta{4}{Dashboard de Métricas}
+Crea un dashboard de analytics que combine tecnologías:
+\begin{itemize}
+\item Grid principal para widgets de métricas
+\item Flexbox para la navegación superior
+% \item Gráficos simulados con CSS (barras, círculos)
+\item Sistema de pestañas para diferentes vistas
+\item Responsivo: los widgets se apilan verticalmente en mobile
+\item Usar \textbf{aspect-ratio} para mantener proporciones
+\end{itemize}
+
+% ========== VERSIÓN C ==========
+% \pregunta{1}{Sitio de Noticias con Grid Jerárquico}
+% Diseña un sitio de noticias con grid complejo:
+% \begin{itemize}
+% \item Artículo principal destacado (full width)
+% \item Grid secundario de 3 columnas para noticias menores
+% \item Sidebar con noticias trending
+% \item Zona de publicidad que respete el grid
+% \item Footer con sitemap en 4 columnas desktop
+% \end{itemize}
+
+% \pregunta{2}{Interface de Chat Responsiva}
+% Crea una interface de mensajería usando Flexbox:
+% \begin{itemize}
+% \item Lista de conversaciones (sidebar izquierdo)
+% \item Área principal de mensajes con burbujas
+% \item Input para escribir mensajes fijo en la parte inferior
+% \item Diseño que oculte la lista de conversaciones en mobile
+% \item Efectos de transición para suavizar cambios
+% \end{itemize}
+
+% \pregunta{3}{Formulario Multistep Responsivo}
+% Implementa un formulario multipaso que:
+% \begin{itemize}
+% \item Use progreso visual con steps (1/4, 2/4, etc.)
+% \item Validación entre steps antes de avanzar
+% \item Diseño responsivo que mantenga la usabilidad
+% \item Botones de navegación (anterior/siguiente) adaptativos
+% \item Almacenamiento temporal en localStorage
+% \end{itemize}
+
+% \pregunta{4}{Admin Panel con Sistema de Grid}
+% Crea un panel de control administrativo:
+% \begin{itemize}
+% \item Grid system de 12 columnas para organización
+% \item Cards que se expanden según importancia
+% \item Modal de configuración que use positioning
+% \item Tablas responsivas con scroll horizontal
+% \item Menú contextual que aparezca al hacer right-click
+% \end{itemize}
+
+% ===== RÚBRICA (COMMON TO ALL VERSIONS) =====
+\section*{Criterios de Evaluación General}
+\begin{itemize}
+\item \textbf{Funcionalidad (40\%):} El código funciona como se solicita
+\item \textbf{Responsividad (30\%):} Se adapta correctamente a diferentes dispositivos
+\item \textbf{Semántica HTML5 (15\%):} Uso apropiado de elementos semánticos
+\item \textbf{Calidad de código (15\%):} Código limpio, comentado y organizado
+\end{itemize}
+
+\end{document}

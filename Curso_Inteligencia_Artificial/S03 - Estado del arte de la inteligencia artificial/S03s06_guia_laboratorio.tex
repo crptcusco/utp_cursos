@@ -1,0 +1,158 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    inputencoding=utf8,
+    extendedchars=true,
+    frame=single,
+    literate={á}{{\'a}}1
+           {é}{{\'e}}1
+           {í}{{\'i}}1
+           {ó}{{\'o}}1
+           {ú}{{\'u}}1
+           {ñ}{{\~n}}1
+           {Á}{{\'A}}1
+           {É}{{\'E}}1
+           {Í}{{\'I}}1
+           {Ó}{{\'O}}1
+           {Ú}{{\'U}}1
+           {Ñ}{{\~N}}1
+}
+
+\title{\textbf{Guía de Laboratorio – Sesión 06} \\ Estructuras de Datos en Python}
+\author{Curso de Inteligencia Artificial}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Objetivo de la sesión}
+Al finalizar la sesión, el alumno será capaz de:
+\begin{itemize}
+    \item Crear y manipular listas, tuplas, conjuntos y diccionarios en Python.
+    \item Acceder, modificar y eliminar elementos de estructuras de datos.
+    \item Usar comprensiones de listas para generar colecciones.
+    \item Aplicar operaciones básicas y métodos propios de cada estructura.
+\end{itemize}
+
+\section*{Instrucciones}
+Resuelva los siguientes ejercicios en Python. Guarde cada uno en un archivo independiente.
+
+\section*{Ejercicios}
+\begin{enumerate}[label=\textbf{Ejercicio \arabic*:}, leftmargin=1.5cm]
+    \item \textbf{Lista de compras:} Cree una lista con al menos 5 productos. Agregue uno más, elimine uno y muestre la lista final.
+    \item \textbf{Suma de elementos:} Dada una lista de números, calcule la suma usando un ciclo.
+    \item \textbf{Tupla de coordenadas:} Cree una tupla con coordenadas (x, y) e imprímala con formato.
+    \item \textbf{Intercambio de valores:} Use una tupla para intercambiar los valores de dos variables.
+    \item \textbf{Conjunto de estudiantes:} Cree un conjunto con nombres de estudiantes sin duplicados y agregue un nuevo nombre.
+    \item \textbf{Unión e intersección de conjuntos:} Dados dos conjuntos de enteros, calcule su unión e intersección.
+    \item \textbf{Diccionario de calificaciones:} Cree un diccionario con nombres de alumnos y notas, y agregue un nuevo alumno.
+    \item \textbf{Búsqueda en diccionario:} Dado un nombre, busque y muestre su calificación.
+    \item \textbf{Conteo de letras:} Dada una cadena, use un diccionario para contar cuántas veces aparece cada letra.
+    \item \textbf{Comprensión de listas:} Genere una lista con los cuadrados de los números del 1 al 10 usando list comprehension.
+\end{enumerate}
+
+\section*{Recomendaciones}
+\begin{itemize}
+    \item Use comentarios para explicar cada parte de su código.
+    \item Pruebe con diferentes datos de entrada.
+    \item Explore métodos como \texttt{append()}, \texttt{remove()}, \texttt{keys()}, \texttt{values()}, \texttt{union()}, \texttt{intersection()}.
+\end{itemize}
+
+\section*{Ejercicios con soluciones}
+\begin{enumerate}[label=\textbf{Ejercicio \arabic*:}, leftmargin=1.5cm]
+    \item \textbf{Lista de compras:}
+    \begin{lstlisting}
+compras = ["pan", "leche", "huevos", "arroz", "pollo"]
+compras.append("queso")
+compras.remove("arroz")
+print(compras)
+    \end{lstlisting}
+
+    \item \textbf{Suma de elementos:}
+    \begin{lstlisting}
+numeros = [1, 2, 3, 4, 5]
+suma = 0
+for n in numeros:
+    suma += n
+print(suma)
+    \end{lstlisting}
+
+    \item \textbf{Tupla de coordenadas:}
+    \begin{lstlisting}
+coordenadas = (10, 20)
+print(f"Coordenadas: x={coordenadas[0]}, y={coordenadas[1]}")
+    \end{lstlisting}
+
+    \item \textbf{Intercambio de valores:}
+    \begin{lstlisting}
+a, b = 5, 10
+a, b = b, a
+print(a, b)
+    \end{lstlisting}
+
+    \item \textbf{Conjunto de estudiantes:}
+    \begin{lstlisting}
+estudiantes = {"Ana", "Luis", "Pedro"}
+estudiantes.add("Marta")
+print(estudiantes)
+    \end{lstlisting}
+
+    \item \textbf{Unión e intersección de conjuntos:}
+    \begin{lstlisting}
+A = {1, 2, 3}
+B = {3, 4, 5}
+print(A.union(B))
+print(A.intersection(B))
+    \end{lstlisting}
+
+    \item \textbf{Diccionario de calificaciones:}
+    \begin{lstlisting}
+notas = {"Ana": 15, "Luis": 18, "Pedro": 12}
+notas["Marta"] = 17
+print(notas)
+    \end{lstlisting}
+
+    \item \textbf{Búsqueda en diccionario:}
+    \begin{lstlisting}
+nombre = "Luis"
+if nombre in notas:
+    print(notas[nombre])
+else:
+    print("Alumno no encontrado")
+    \end{lstlisting}
+
+    \item \textbf{Conteo de letras:}
+    \begin{lstlisting}
+texto = "python"
+conteo = {}
+for letra in texto:
+    conteo[letra] = conteo.get(letra, 0) + 1
+print(conteo)
+    \end{lstlisting}
+
+    \item \textbf{Comprensión de listas:}
+    \begin{lstlisting}
+cuadrados = [x**2 for x in range(1, 11)]
+print(cuadrados)
+    \end{lstlisting}
+\end{enumerate}
+
+\end{document}

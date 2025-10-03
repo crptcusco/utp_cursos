@@ -1,0 +1,228 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+
+% Configuración de colores
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{blue}{RGB}{41,84,163}
+\definecolor{darkblue}{RGB}{0,51,102}
+
+% Definir lenguaje CSS para listings
+\lstdefinelanguage{CSS}{
+    keywords={color,background,margin,padding,font,weight,display,position,top,left,right,bottom,list,style,border,size,white,space,min,max},
+    sensitive=true,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    morestring=[b]',
+    morestring=[b]"
+}
+
+% Estilo para cajas de código (corregido para UTF-8)
+\newtcblisting{codebox}[1][]{
+    colback=codebg,
+    colframe=blue,
+    arc=4pt,
+    boxrule=0.8pt,
+    fonttitle=\bfseries,
+    listing only,
+    listing options={
+        basicstyle=\ttfamily\small,
+        breaklines=true,
+        tabsize=2,
+        literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+                  {ñ}{{\~n}}1 {¿}{{?`}}1 {¡}{{!`}}1
+    },
+    #1
+}
+
+% Estilo para enunciados
+\newcommand{\enunciado}[1]{
+    \vspace{0.5em}
+    \noindent\colorbox{blue!10}{
+        \parbox{\dimexpr\textwidth-2\fboxsep}{
+            \small\sffamily\textcolor{darkblue}{#1}
+        }
+    }
+    \vspace{0.5em}
+}
+
+\title{\textbf{Guía de Laboratorio: Flexbox }}
+\author{\textcolor{blue}{\textbf{Docente: Carlos R. P. Tovar}}}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Ejercicio 1: Contenedor Básico}
+\enunciado{
+    1. Crea un archivo index.html y otro styles.css \\
+    2. Define un div.container con 3 elementos div.item \\
+    3. Aplica display: flex al contenedor y usa justify-content para centrar los elementos
+}
+
+\begin{codebox}[title=HTML]
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Flexbox Basico</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+  </div>
+</body>
+</html>
+\end{codebox}
+
+\begin{codebox}[title=CSS]
+.container {
+  display: flex;
+  justify-content: center;
+  background: #f0f0f0;
+  padding: 20px;
+}
+
+.item {
+  background: lightblue;
+  padding: 20px;
+  margin: 10px;
+  width: 80px;
+  text-align: center;
+}
+\end{codebox}
+
+\section*{Ejercicio 3: Dirección y Envoltura}
+\enunciado{
+    1. Usa flex-direction: column en .container y analiza el efecto \\
+    2. Agrega 6 elementos div.item \\
+    3. Aplica flex-wrap: wrap para envoltar elementos \\
+    4. Experimenta con diferentes alturas de contenedor
+}
+
+\begin{codebox}[title=HTML]
+<div class="container">
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+    <div class="item">4</div>
+    <div class="item">5</div>
+    <div class="item">6</div>
+</div>
+\end{codebox}
+
+\begin{codebox}[title=CSS]
+.container {
+    display: flex;
+    flex-direction: column;  /* Prueba tambien con row */
+    flex-wrap: wrap;
+    height: 300px;
+    gap: 10px;
+    background: #f0f0f0;
+    padding: 20px;
+}
+
+.item {
+    background: lightblue;
+    padding: 20px;
+    flex: 1 0 80px;
+    text-align: center;
+}
+\end{codebox}
+
+\section*{Ejercicio 4: Tamaño Flexible}
+\enunciado{
+    1. Modifica .item para usar flex: 1 en lugar de tamaño fijo \\
+    2. Experimenta con: \\
+    \hspace{1em}• flex-grow: controla el crecimiento relativo \\
+    \hspace{1em}• flex-shrink: controla la reducción relativa \\
+    \hspace{1em}• flex-basis: establece el tamaño inicial \\
+    3. Prueba diferentes combinaciones
+}
+
+\begin{codebox}[title=CSS]
+/* Opcion 1: Shorthand (crece + encoge proporcionalmente) */
+.item {
+    flex: 1;  /* Equivale a flex: 1 1 0 */
+}
+
+/* Opcion 2: Propiedades detalladas */
+.item-1 {
+    flex-grow: 1;    /* Factor de crecimiento */
+    flex-shrink: 1;  /* Factor de reduccion */
+    flex-basis: 100px; /* Tamano base */
+}
+
+.item-2 {
+    flex-grow: 2;    /* Crecera el doble que item-1 */
+    flex-shrink: 0;  /* No se reducira */
+    flex-basis: 150px;
+}
+\end{codebox}
+
+\section*{Ejercicio 5: Galería de Tarjetas (Desafío)}
+\enunciado{
+    1. Crea una estructura con div.card-container que tenga varias div.card \\
+    2. Usa flex-wrap y justify-content: center para distribución responsive \\
+    3. Aplica estilos con box-shadow y border-radius \\
+    4. Agrega efecto hover para interacción
+}
+
+\begin{codebox}[title=HTML]
+<div class="card-container">
+    <div class="card">
+        <h3>Tarjeta 1</h3>
+        <p>Contenido de ejemplo</p>
+    </div>
+    <div class="card">
+        <h3>Tarjeta 2</h3>
+        <p>Contenido de ejemplo</p>
+    </div>
+    <!-- Repetir para mas tarjetas -->
+</div>
+\end{codebox}
+
+\begin{codebox}[title=CSS]
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    width: 200px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.card h3 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+.card p {
+    color: #7f8c8d;
+}
+\end{codebox}
+
+\end{document}

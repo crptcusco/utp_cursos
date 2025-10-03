@@ -1,0 +1,86 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{gray},
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    frame=single
+}
+
+\title{\textbf{Guía de Laboratorio – Sesión 02} \\ Introducción a Python y Tipos de Datos}
+\author{Curso de Inteligencia Artificial}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Objetivo de la sesión}
+Al finalizar la sesión, el alumno será capaz de:
+\begin{itemize}
+    \item Reconocer la sintaxis básica de Python.
+    \item Utilizar variables y tipos de datos básicos.
+    \item Realizar operaciones aritméticas y lógicas.
+    \item Usar las funciones \texttt{print()}, \texttt{input()} y \texttt{type()}.
+    \item Convertir entre distintos tipos de datos.
+\end{itemize}
+
+\section*{Instrucciones}
+Resuelva los siguientes ejercicios en Python. Guarde todos los programas en un archivo por separado, con nombres como \texttt{ejercicio1.py}, \texttt{ejercicio2.py}, etc.
+
+\section*{Ejercicios}
+
+\begin{enumerate}[label=\textbf{Ejercicio \arabic*:}, leftmargin=1.5cm]
+    \item \textbf{Hola mundo personalizado:} Solicite el nombre del usuario y muestre el mensaje \texttt{Hola, <nombre>} en pantalla.
+    
+    \item \textbf{Suma de dos números:} Pida al usuario dos números enteros y muestre su suma, resta, multiplicación y división.
+    
+    \item \textbf{Conversor de temperaturas:} Convierta una temperatura en grados Celsius a Fahrenheit y Kelvin.
+    
+    \item \textbf{Tipo de dato:} Lea un valor desde teclado y muestre su valor y su tipo con la función \texttt{type()}.
+    
+    \item \textbf{Área de un triángulo:} Pida la base y la altura, y calcule el área del triángulo.
+    
+    \item \textbf{Operaciones con cadenas:} Lea una cadena de texto y:
+    \begin{itemize}
+        \item Muestre la cantidad de caracteres.
+        \item Conviértala a mayúsculas y minúsculas.
+        \item Muestre los tres primeros caracteres.
+    \end{itemize}
+    
+    \item \textbf{Conversión de tipos:} Solicite un número decimal y muestre:
+    \begin{itemize}
+        \item El número original.
+        \item Su conversión a entero.
+        \item Su conversión a cadena.
+    \end{itemize}
+    
+    \item \textbf{Promedio de notas:} Pida tres notas (números decimales), calcule el promedio y muestre si el estudiante aprobó (nota $\geq$ 13) o reprobó.
+    
+    \item \textbf{Tiempo en segundos:} Lea horas, minutos y segundos, y conviértalos a la cantidad total de segundos.
+    
+    \item \textbf{Calculadora simple:} Solicite dos números y un operador (\texttt{+}, \texttt{-}, \texttt{*}, \texttt{/}) y muestre el resultado correspondiente.
+\end{enumerate}
+
+\section*{Recomendaciones}
+\begin{itemize}
+    \item Utilice nombres de variables claros y descriptivos.
+    \item Pruebe los programas con distintos valores.
+    \item Guarde copias de seguridad de sus archivos.
+\end{itemize}
+
+\end{document}

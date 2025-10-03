@@ -1,0 +1,131 @@
+// ----------------------------------------
+// 🎨 VARIABLES
+// ----------------------------------------
+$color-primario: #1E2A38;
+$color-secundario: #F2F2F2;
+$color-texto: #333333;
+$color-blanco: #FFFFFF;
+$color-acento: #E74C3C;
+$color-acento-hover: #C0392B;
+
+$espaciado-base: 20px;
+$radio-borde: 4px;
+
+// ----------------------------------------
+// 📐 FUNCIONES
+// ----------------------------------------
+@function rem($px) {
+  @return ($px / 16) * 1rem;
+}
+
+// ----------------------------------------
+// 🧩 MIXINS
+// ----------------------------------------
+@mixin sombra-suave {
+  box-shadow: 0 rem(4) rem(8) rgba(0, 0, 0, 0.1);
+}
+
+@mixin sombra-suave-hover {
+  box-shadow: 0 rem(6) rem(10) rgba(0, 0, 0, 0.2);
+}
+
+@mixin boton-estilo($bg-color, $hover-color) {
+  display: inline-block;
+  background-color: $bg-color;
+  color: $color-blanco;
+  padding: rem(10) rem(15);
+  text-decoration: none;
+  border-radius: $radio-borde;
+  @include sombra-suave;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    background-color: $hover-color;
+    @include sombra-suave-hover;
+  }
+}
+
+// ----------------------------------------
+// 🔧 RESET Y ESTILOS GLOBAIS
+// ----------------------------------------
+body {
+  font-family: Arial, sans-serif;
+  font-size: rem(16);
+  background-color: $color-secundario;
+  color: $color-texto;
+  margin: 0;
+  padding: 0;
+}
+
+// ----------------------------------------
+// 🧱 LAYOUT
+// ----------------------------------------
+.site-header {
+  background-color: $color-primario;
+  color: $color-blanco;
+  padding: rem(40);
+
+  .menu {
+    margin-top: rem(20);
+
+    a {
+      color: $color-blanco;
+      text-decoration: none;
+      margin-right: rem(20);
+    }
+  }
+}
+
+.servicios {
+  padding: rem(40);
+
+  .cards {
+    display: flex;
+    gap: rem(20);
+
+    .card {
+      background-color: $color-blanco;
+      padding: rem(20);
+      border-radius: $radio-borde;
+      width: calc((100% / 2) - rem(10));
+      @include sombra-suave;
+
+      h3 {
+        margin-top: 0;
+      }
+
+      .btn {
+        @include boton-estilo($color-acento, $color-acento-hover);
+      }
+    }
+  }
+}
+
+.equipo {
+  background-color: $color-secundario;
+  padding: rem(40);
+  text-align: center;
+}
+
+.site-footer {
+  background-color: $color-primario;
+  color: $color-blanco;
+  text-align: center;
+  padding: rem(20);
+  margin-top: rem(40);
+}
+
+// ----------------------------------------
+// 📱 RESPONSIVE
+// ----------------------------------------
+@media (max-width: 600px) {
+  .servicios {
+    .cards {
+      flex-direction: column;
+
+      .card {
+        width: 100%;
+      }
+    }
+  }
+}

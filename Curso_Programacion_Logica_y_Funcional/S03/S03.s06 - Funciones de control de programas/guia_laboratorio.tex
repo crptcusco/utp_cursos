@@ -1,0 +1,218 @@
+\documentclass[12pt]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[margin=2.5cm]{geometry}
+
+% Configuración para listings (código Haskell)
+\lstset{
+    language=Haskell,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!50!black},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=5pt,
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=2,
+    captionpos=b
+}
+
+% Formato de secciones
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\bfseries}{\thesubsection}{1em}{}
+
+\begin{document}
+
+\title{Guía de Laboratorio: Tipos de Datos y Control de Programas en Haskell}
+\author{Programación Funcional}
+\date{Duración: 1.5 horas}
+\maketitle
+
+\section*{Objetivos de la Práctica}
+\begin{itemize}
+    \item Comprender y utilizar tipos de datos algebraicos en Haskell
+    \item Implementar funciones con pattern matching
+    \item Manejar el control de programas usando corte y fallo
+    \item Desarrollar habilidades en la manipulación de listas y tipos personalizados
+\end{itemize}
+
+\section{Introducción Teórica}
+
+\subsection{Tipos de Datos Algebraicos}
+Los tipos de datos algebraicos permiten definir estructuras de datos complejas mediante:
+\begin{itemize}
+    \item \textbf{Product types}: Tuplas y registros
+    \item \textbf{Sum types}: Tipos con múltiples constructores
+    \item \textbf{Recursive types}: Estructuras que se referencian a sí mismas
+\end{itemize}
+
+\subsection{Funciones de Control: Corte y Fallo}
+\begin{itemize}
+    \item \textbf{Corte (Short-circuit evaluation)}: Evaluación perezosa que evita cálculos innecesarios
+    \item \textbf{Fallo}: Manejo de casos donde las operaciones pueden no tener resultado definido
+\end{itemize}
+
+\section{Ejercicios Prácticos}
+
+\subsection{Ejercicio 1: Tipos de Datos Básicos (15 minutos)}
+
+Define los siguientes tipos de datos y funciones:
+
+\begin{lstlisting}
+-- 1. Tipo para representar días de la semana
+data Dia = Lunes | Martes | Miercoles | Jueves | Viernes | Sabado | Domingo
+
+-- 2. Función que determina si un día es laborable
+esLaborable :: Dia -> Bool
+esLaborable Sabado = False
+esLaborable Domingo = False
+esLaborable _ = True
+
+-- 3. Tipo para representar coordenadas 2D
+data Punto = Punto Double Double
+
+-- 4. Función que calcula la distancia entre dos puntos
+distancia :: Punto -> Punto -> Double
+distancia (Punto x1 y1) (Punto x2 y2) = sqrt ((x2 - x1)^2 + (y2 - y1)^2)
+\end{lstlisting}
+
+\textbf{Tarea}: Implementa una función que calcule el punto medio entre dos puntos.
+
+\subsection{Ejercicio 2: Tipos Algebraicos (20 minutos)}
+
+Crea tipos más complejos y funciones asociadas:
+
+\begin{lstlisting}
+-- 1. Tipo para formas geométricas
+data Forma = Circulo Double          -- radio
+           | Rectangulo Double Double -- base, altura
+           | Cuadrado Double         -- lado
+           deriving Show
+
+-- 2. Función para calcular área
+area :: Forma -> Double
+area (Circulo r) = pi * r * r
+area (Rectangulo b a) = b * a
+area (Cuadrado l) = l * l
+
+-- 3. Tipo para árbol binario
+data Arbol a = Hoja a
+             | Nodo (Arbol a) a (Arbol a)
+             deriving Show
+
+-- 4. Función para calcular altura del árbol
+altura :: Arbol a -> Int
+altura (Hoja _) = 1
+altura (Nodo izq _ der) = 1 + max (altura izq) (altura der)
+\end{lstlisting}
+
+\textbf{Tarea}: Implementa una función que cuente el número de hojas en un árbol.
+
+\subsection{Ejercicio 3: Control con Corte (20 minutos)}
+
+Implementa funciones que utilicen evaluación perezosa:
+
+\begin{lstlisting}
+-- 1. Función que encuentra el primer elemento que cumple una condición
+encontrar :: (a -> Bool) -> [a] -> Maybe a
+encontrar _ [] = Nothing
+encontrar f (x:xs)
+    | f x       = Just x
+    | otherwise = encontrar f xs
+
+-- 2. Función que verifica si todos los elementos cumplen una condición
+todos :: (a -> Bool) -> [a] -> Bool
+todos _ [] = True
+todos f (x:xs) = f x && todos f xs
+
+-- 3. Función que toma elementos mientras cumplan una condición
+tomarMientras :: (a -> Bool) -> [a] -> [a]
+tomarMientras _ [] = []
+tomarMientras f (x:xs)
+    | f x       = x : tomarMientras f xs
+    | otherwise = []
+\end{lstlisting}
+
+\textbf{Tarea}: Crea una función que concatene dos listas solo si la primera no está vacía.
+
+\subsection{Ejercicio 4: Manejo de Fallo (20 minutos)}
+
+Implementa funciones que manejen casos de fallo:
+
+\begin{lstlisting}
+-- 1. División segura
+divisionSegura :: Double -> Double -> Maybe Double
+divisionSegura _ 0 = Nothing
+divisionSegura x y = Just (x / y)
+
+-- 2. Acceso seguro a lista
+elementoEn :: Int -> [a] -> Maybe a
+elementoEn _ [] = Nothing
+elementoEn 0 (x:_) = Just x
+elementoEn n (_:xs) = elementoEn (n-1) xs
+
+-- 3. Tipo para resultados con error
+data Resultado a = Exito a | Error String
+
+-- 4. Función que procesa una lista de operaciones
+procesarLista :: [a -> Maybe b] -> [a] -> [Maybe b]
+procesarLista ops valores = zipWith (\f x -> f x) ops valores
+\end{lstlisting}
+
+\textbf{Tarea}: Implementa una función que convierta \texttt{Maybe a} a \texttt{Resultado a}.
+
+\subsection{Ejercicio 5: Integración (15 minutos)}
+
+Combina todos los conceptos aprendidos:
+
+\begin{lstlisting}
+-- 1. Sistema de gestión de estudiantes
+data Estudiante = Estudiante {
+    nombre :: String,
+    edad :: Int,
+    calificaciones :: [Double]
+} deriving Show
+
+-- 2. Función que calcula el promedio con manejo de error
+promedio :: Estudiante -> Maybe Double
+promedio (Estudiante _ _ []) = Nothing
+promedio (Estudiante _ _ notas) = 
+    Just (sum notas / fromIntegral (length notas))
+
+-- 3. Función que filtra estudiantes aprobados
+aprobados :: [Estudiante] -> [Estudiante]
+aprobados = filter (\e -> case promedio e of
+                          Just p -> p >= 6.0
+                          Nothing -> False)
+\end{lstlisting}
+
+\textbf{Tarea}: Crea una función que encuentre al estudiante con el promedio más alto.
+
+\section*{Evaluación}
+\begin{itemize}
+    \item Correcta definición de tipos de datos (25\%)
+    \item Implementación adecuada de funciones (35\%)
+    \item Manejo apropiado de casos de fallo (20\%)
+    \item Uso eficiente de evaluación perezosa (20\%)
+\end{itemize}
+
+\section*{Material Adicional}
+\begin{itemize}
+    \item \textbf{Documentación}: Haskell Language Report
+    \item \textbf{Libros}: "Learn You a Haskell for Great Good!"
+    \item \textbf{Recursos online}: Hoogle, Haskell Wiki
+\end{itemize}
+
+\end{document}

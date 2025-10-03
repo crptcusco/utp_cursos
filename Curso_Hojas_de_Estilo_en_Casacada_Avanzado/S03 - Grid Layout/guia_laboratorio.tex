@@ -1,0 +1,169 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+
+% ===== CONFIGURACIÓN =====
+\title{\textbf{Guía de Laboratorio 3: Grid Layout}}
+\author{\textcolor{blue}{\textbf{Docente: Carlos R. P. Tovar}}}
+\date{}
+
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{blue}{RGB}{41,84,163}
+\definecolor{darkblue}{RGB}{0,51,102}
+
+% ===== ESTILOS PARA CÓDIGO =====
+\lstdefinelanguage{CSS}{
+    keywords={display, grid, grid-template-columns, grid-template-rows, gap, 
+              grid-column, grid-row, grid-area, align-items, justify-content},
+    sensitive=true,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+}
+
+\newtcblisting{codebox}[1][]{
+    colback=codebg,
+    colframe=blue,
+    arc=4pt,
+    boxrule=0.8pt,
+    fonttitle=\bfseries,
+    listing only,
+    listing options={
+        basicstyle=\ttfamily\small,
+        breaklines=true,
+        tabsize=2,
+        literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    },
+    #1
+}
+
+\newcommand{\enunciado}[1]{
+    \vspace{0.5em}
+    \noindent\colorbox{blue!10}{
+        \parbox{\dimexpr\textwidth-2\fboxsep}{
+            \small\sffamily\textcolor{darkblue}{#1}
+        }
+    }
+    \vspace{0.5em}
+}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+% ===== EJERCICIOS =====
+
+\section*{Ejercicio 1: Contenedor Grid Básico}
+\enunciado{
+    1. Crea un contenedor grid con 3 columnas y 2 filas \\
+    2. Usa \texttt{grid-template-columns} y \texttt{grid-template-rows} \\
+    3. Añade 6 elementos hijos
+}
+
+\begin{codebox}[title=HTML]
+<div class="grid-container">
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <!-- ... hasta 6 items -->
+</div>
+\end{codebox}
+
+\begin{codebox}[title=CSS]
+.grid-container {
+    display: grid;
+    grid-template-columns: 100px 100px 100px;
+    grid-template-rows: 50px 50px;
+    gap: 10px;
+}
+
+.item {
+    background: lightblue;
+    text-align: center;
+    padding: 20px;
+}
+\end{codebox}
+
+\section*{Ejercicio 2: Unidades Flexibles y \texttt{repeat()}}
+\enunciado{
+    1. Usa \texttt{repeat()} y unidades \texttt{fr} (fracción) \\
+    2. Crea 4 columnas de igual ancho \\
+    3. Añade filas con altura mínima de 100px
+}
+
+\begin{codebox}[title=CSS]
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: 15px;
+}
+\end{codebox}
+
+\section*{Ejercicio 3: Posicionamiento con \texttt{grid-column} y \texttt{grid-row}}
+\enunciado{
+    1. Haz que el item 1 ocupe 2 columnas \\
+    2. Haz que el item 5 ocupe 2 filas \\
+    3. Experimenta con \texttt{grid-column-start/end}
+}
+
+\begin{codebox}[title=CSS]
+.item-1 {
+    grid-column: 1 / 3;  /* Ocupa desde línea 1 a 3 */
+}
+
+.item-5 {
+    grid-row: span 2;    /* Ocupa 2 filas */
+}
+\end{codebox}
+
+\section*{Ejercicio 4: Áreas de Grid}
+\enunciado{
+    1. Define áreas con \texttt{grid-template-areas} \\
+    2. Asigna elementos a áreas con \texttt{grid-area} \\
+    3. Crea un layout de cabecera, contenido y pie
+}
+
+\begin{codebox}[title=CSS]
+.grid-container {
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "sidebar content"
+        "footer footer";
+    gap: 10px;
+}
+
+.header { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.content { grid-area: content; }
+.footer { grid-area: footer; }
+\end{codebox}
+
+\section*{Ejercicio 5: Diseño Responsive (Desafío)}
+\enunciado{
+    1. Usa media queries para cambiar el grid en móviles \\
+    2. Convierte 4 columnas en 2 columnas en pantallas < 600px \\
+    3. Haz que el sidebar ocupe toda la anchura en móviles
+}
+
+\begin{codebox}[title=CSS]
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 600px) {
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .sidebar {
+        grid-column: 1 / -1; /* Ocupa todas las columnas */
+    }
+}
+\end{codebox}
+
+\end{document}
