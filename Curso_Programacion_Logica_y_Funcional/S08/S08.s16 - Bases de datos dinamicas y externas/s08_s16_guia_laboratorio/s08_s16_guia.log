@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.16)  28 SEP 2025 10:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.7.16)  3 OCT 2025 23:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"d:/UNIVERSIDAD_UTP/Curso_Programacion_Logica_y_Funcional/S08.s16 - Bases de datos dinamicas y externas/s08_s16_guia.tex"
-(d:/UNIVERSIDAD_UTP/Curso_Programacion_Logica_y_Funcional/S08.s16 - Bases de datos dinamicas y externas/s08_s16_guia.tex
+**"d:/utp_cursos/Curso_Programacion_Logica_y_Funcional/S08/S08.s16 - Bases de datos dinamicas y externas/s08_s16_guia_laboratorio/s08_s16_guia.tex"
+(d:/utp_cursos/Curso_Programacion_Logica_y_Funcional/S08/S08.s16 - Bases de datos dinamicas y externas/s08_s16_guia_laboratorio/s08_s16_guia.tex
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-07-11>
 (c:/texlive/2025/texmf-dist/tex/latex/base/article.cls
@@ -648,12 +648,12 @@ Package rerunfilecheck Info: File `s08_s16_guia.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  26016 strings out of 467816
- 481165 string characters out of 5436431
+ 481237 string characters out of 5436431
  1279478 words of memory out of 5000000
  54153 multiletter control sequences out of 15000+600000
  639840 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 116i,6n,121p,553b,2588s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 116i,6n,121p,577b,2588s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfit1095.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm2074.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
 Output written on s08_s16_guia.pdf (6 pages, 239198 bytes).
 PDF statistics:

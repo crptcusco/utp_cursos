@@ -1,8 +1,8 @@
-PWD d:/UNIVERSIDAD_UTP/Curso_Programacion_Logica_y_Funcional/S08.s16 - Bases de datos dinamicas y externas
+PWD d:/utp_cursos/Curso_Programacion_Logica_y_Funcional/S08/S08.s16 - Bases de datos dinamicas y externas/s08_s16_guia_laboratorio
 INPUT c:/texlive/2025/texmf.cnf
 INPUT c:/texlive/2025/texmf-dist/web2c/texmf.cnf
 INPUT c:/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT d:/UNIVERSIDAD_UTP/Curso_Programacion_Logica_y_Funcional/S08.s16 - Bases de datos dinamicas y externas/s08_s16_guia.tex
+INPUT d:/utp_cursos/Curso_Programacion_Logica_y_Funcional/S08/S08.s16 - Bases de datos dinamicas y externas/s08_s16_guia_laboratorio/s08_s16_guia.tex
 OUTPUT s08_s16_guia.log
 INPUT c:/texlive/2025/texmf-dist/tex/latex/base/article.cls
 INPUT c:/texlive/2025/texmf-dist/tex/latex/base/article.cls
